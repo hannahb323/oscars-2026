@@ -180,6 +180,117 @@
         .nomination-badge[data-nominee=""]:hover::after {
             display: none;
         }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            h2 {
+                font-size: 1.75rem !important;
+            }
+            
+            .oscar-card {
+                padding: 1rem !important;
+            }
+            
+            .movie-card {
+                margin-bottom: 1.5rem;
+            }
+            
+            /* Larger touch targets for mobile */
+            button {
+                min-height: 44px;
+            }
+            
+            input[type="radio"], input[type="checkbox"] {
+                min-height: 20px;
+                min-width: 20px;
+            }
+            
+            /* Emoji selector - better mobile layout */
+            .emoji-option {
+                font-size: 2rem !important;
+                padding: 0.75rem !important;
+            }
+            
+            /* Search bar - prevent iOS zoom */
+            #movieSearch {
+                font-size: 16px !important;
+            }
+            
+            input[type="text"] {
+                font-size: 16px !important;
+            }
+            
+            /* Stats cards */
+            .grid {
+                gap: 1rem !important;
+            }
+            
+            /* Filter buttons */
+            .filter-btn {
+                font-size: 0.75rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+            
+            /* Movie poster sizing */
+            .movie-card img {
+                max-height: 350px !important;
+            }
+            
+            /* Nomination badges */
+            .nomination-badge {
+                font-size: 0.7rem !important;
+                padding: 0.4rem 0.6rem !important;
+            }
+            
+            /* Predictions */
+            .prediction-category {
+                padding: 1rem !important;
+            }
+            
+            /* Better readability */
+            .text-5xl {
+                font-size: 2.5rem !important;
+            }
+            
+            .text-3xl {
+                font-size: 1.5rem !important;
+            }
+            
+            .text-2xl {
+                font-size: 1.25rem !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem !important;
+            }
+            
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            .movie-card img {
+                max-height: 300px !important;
+            }
+            
+            /* Single column layout for very small screens */
+            #moviesGrid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .text-5xl {
+                font-size: 2rem !important;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -1460,7 +1571,7 @@
             
             try {
                 const predKey = `predictions:${currentUser}`;
-                await window.storage.set(predKey, JSON.stringify(userPredictions));
+                await window.storage.set(predKey, JSON.stringify(userPredictions), true);
                 
                 // Update all users list
                 if (!window.allUsers[currentUser]) {
@@ -1525,7 +1636,7 @@
         async function loadPredictions() {
             try {
                 const predKey = `predictions:${currentUser}`;
-                const result = await window.storage.get(predKey);
+                const result = await window.storage.get(predKey, true);
                 if (result && result.value) {
                     userPredictions = JSON.parse(result.value);
                 }
