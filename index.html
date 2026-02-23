@@ -215,8 +215,14 @@
             
             /* Emoji selector - better mobile layout */
             .emoji-option {
-                font-size: 2rem !important;
-                padding: 0.75rem !important;
+                font-size: 2.5rem !important;
+                padding: 1rem !important;
+                background: transparent !important;
+                border-color: #d4af37 !important;
+            }
+            
+            .emoji-option:hover {
+                background: rgba(212, 175, 55, 0.2) !important;
             }
             
             /* Search bar - prevent iOS zoom */
@@ -336,36 +342,35 @@
 
         <!-- Name Entry -->
         <div id="nameEntry" class="mb-12 max-w-lg mx-auto fade-in">
-            <div class="oscar-card rounded-lg p-10 art-deco-border">
+            <div class="oscar-card p-10 art-deco-border">
                 <div class="text-center mb-8">
-                    <h2 class="text-4xl font-bold mb-3" style="background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">who's in the running?</h2>
-                </div>
                 <input 
                     type="text" 
                     id="userName" 
-                    placeholder="Your Name"
-                    class="w-full px-6 py-4 border-2 border-yellow-600 bg-white text-gray-800 font-semibold rounded-sm focus:outline-none focus:border-yellow-500 mb-6 text-center text-lg uppercase tracking-wide"
+                    placeholder="Please enter your name"
+                    class="w-full px-6 py-4 border-2 border-yellow-600 bg-white text-gray-800 font-semibold rounded-sm focus:outline-none focus:border-yellow-500 mb-2 text-center text-lg uppercase tracking-wide"
                 >
+                <p class="text-sm text-gray-400 mb-6 uppercase tracking-wide text-center font-semibold">Select an emoji</p>
                 <div class="mb-6">
                     <div class="grid grid-cols-6 gap-2">
-                        <button type="button" onclick="selectEmoji('🎞️', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🎞️</button>
-                        <button type="button" onclick="selectEmoji('🎥', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🎥</button>
-                        <button type="button" onclick="selectEmoji('🎬', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🎬</button>
-                        <button type="button" onclick="selectEmoji('📸', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">📸</button>
-                        <button type="button" onclick="selectEmoji('🤩', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🤩</button>
-                        <button type="button" onclick="selectEmoji('🌟', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🌟</button>
-                        <button type="button" onclick="selectEmoji('🍿', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🍿</button>
-                        <button type="button" onclick="selectEmoji('🍾', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🍾</button>
-                        <button type="button" onclick="selectEmoji('🥂', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🥂</button>
-                        <button type="button" onclick="selectEmoji('🏓', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🏓</button>
-                        <button type="button" onclick="selectEmoji('🧛', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🧛</button>
-                        <button type="button" onclick="selectEmoji('👽', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">👽</button>
-                        <button type="button" onclick="selectEmoji('📝', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">📝</button>
-                        <button type="button" onclick="selectEmoji('💣', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">💣</button>
-                        <button type="button" onclick="selectEmoji('🧟', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🧟</button>
-                        <button type="button" onclick="selectEmoji('🏎️', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🏎️</button>
-                        <button type="button" onclick="selectEmoji('🚂', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🚂</button>
-                        <button type="button" onclick="selectEmoji('🧪', event)" class="emoji-option text-3xl p-3 bg-white hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🧪</button>
+                        <button type="button" onclick="selectEmoji('🎞️', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🎞️</button>
+                        <button type="button" onclick="selectEmoji('🎥', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🎥</button>
+                        <button type="button" onclick="selectEmoji('🎬', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🎬</button>
+                        <button type="button" onclick="selectEmoji('📸', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">📸</button>
+                        <button type="button" onclick="selectEmoji('🤩', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🤩</button>
+                        <button type="button" onclick="selectEmoji('🌟', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🌟</button>
+                        <button type="button" onclick="selectEmoji('🍿', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🍿</button>
+                        <button type="button" onclick="selectEmoji('🍾', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🍾</button>
+                        <button type="button" onclick="selectEmoji('🥂', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🥂</button>
+                        <button type="button" onclick="selectEmoji('🏓', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🏓</button>
+                        <button type="button" onclick="selectEmoji('🧛', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🧛</button>
+                        <button type="button" onclick="selectEmoji('👽', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">👽</button>
+                        <button type="button" onclick="selectEmoji('📝', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">📝</button>
+                        <button type="button" onclick="selectEmoji('💣', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">💣</button>
+                        <button type="button" onclick="selectEmoji('🧟', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🧟</button>
+                        <button type="button" onclick="selectEmoji('🏎️', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🏎️</button>
+                        <button type="button" onclick="selectEmoji('🚂', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🚂</button>
+                        <button type="button" onclick="selectEmoji('🧪', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all border-2 border-transparent hover:border-yellow-600">🧪</button>
                     </div>
                 </div>
                 <button 
@@ -1161,12 +1166,12 @@
             // Update button styles
             document.querySelectorAll('.emoji-option').forEach(btn => {
                 btn.classList.remove('border-yellow-600', 'bg-yellow-50');
-                btn.classList.add('border-transparent', 'bg-white');
+                btn.classList.add('border-transparent', 'bg-transparent');
             });
             
             // Highlight selected emoji - use event.currentTarget to get the button
             if (event && event.currentTarget) {
-                event.currentTarget.classList.remove('border-transparent', 'bg-white');
+                event.currentTarget.classList.remove('border-transparent', 'bg-transparent');
                 event.currentTarget.classList.add('border-yellow-600', 'bg-yellow-50');
             }
         }
