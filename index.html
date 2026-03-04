@@ -39,8 +39,11 @@
         .toast-saving { background:#1a1a1a; color:#d4af37; border-color:#d4af37; }
         .toast-ok  { background:#f0fdf4; color:#166534; border-color:#16a34a; }
         .toast-err { background:#fef2f2; color:#991b1b; border-color:#dc2626; }
-        /* Poster placeholder shimmer while lazy-loading */
         .poster-placeholder { background: linear-gradient(90deg, #e8e0cc 25%, #f5f0e8 50%, #e8e0cc 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; min-height: 200px; }
+        /* prediction category answered state */
+        .prediction-category.answered { border-color: #d4af37; background: linear-gradient(135deg,#fffdf0 0%,#faf8f3 100%); }
+        .prediction-category.answered h4::after { content: ' ✓'; color: #d4af37; }
+        @keyframes scrollPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
         /* ── Mobile ────────────────────────────────────────────────────────── */
         @media(max-width:768px){
             body { font-size:14px; }
@@ -48,30 +51,21 @@
             h2 { font-size:1.6rem!important; }
             .oscar-card { padding:1rem!important; }
             .movie-card { margin-bottom:1rem; }
-            /* 44px min touch targets */
-            button, a { min-height:44px; }
-            /* Prevent iOS zoom on focus */
+            button { min-height:44px; }
+            a { min-height:44px; display:inline-flex; align-items:center; justify-content:center; }
             #movieSearch, input[type="text"] { font-size:16px!important; }
-            /* Tabs stack nicely */
             #pageTabs { gap:0.5rem!important; }
             .page-tab { padding:0.6rem 1.2rem!important; font-size:0.7rem!important; }
-            /* Filter bar wraps cleanly */
             .filter-btn { font-size:.7rem!important; padding:.5rem .75rem!important; min-height:40px; }
             .sub-filter-btn { font-size:.7rem!important; padding:.4rem .6rem!important; min-height:36px; }
-            /* Nomination badges */
             .nomination-badge { font-size:.65rem!important; padding:.35rem .5rem!important; }
-            /* Stats numbers */
             .text-5xl { font-size:2rem!important; }
             .text-3xl { font-size:1.4rem!important; }
             .text-2xl { font-size:1.1rem!important; }
-            /* Movie card title */
             .movie-card h3 { font-size:1.1rem!important; }
-            /* Prediction radio rows */
             .prediction-category { padding:.75rem!important; }
             label.flex { padding:.6rem!important; }
-            /* Leaderboard rows */
             #leaderboard .flex { padding:.75rem!important; gap:.5rem!important; }
-            /* Header trophy smaller */
             .float span { font-size:4rem!important; }
         }
         @media(max-width:480px){
@@ -79,20 +73,14 @@
             h2 { font-size:1.3rem!important; }
             #moviesGrid { grid-template-columns:1fr!important; }
             .text-5xl { font-size:1.75rem!important; }
-            /* Full-width tabs */
             #pageTabs { flex-direction:row; width:100%; }
             .page-tab { flex:1; text-align:center; padding:.6rem .5rem!important; font-size:.65rem!important; }
-            /* Search bar full width */
             #movieSearch { min-width:unset!important; }
-            /* Filter buttons scroll horizontally */
             .flex.flex-wrap.gap-2 { flex-wrap:nowrap; overflow-x:auto; padding-bottom:.25rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
             .flex.flex-wrap.gap-2::-webkit-scrollbar { display:none; }
-            /* Sub-filters scroll horizontally too */
             #subFilters { flex-wrap:nowrap!important; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
             #subFilters::-webkit-scrollbar { display:none; }
-            /* In the lead grid 2 cols */
             .grid.grid-cols-2.md\\:grid-cols-5 { grid-template-columns:repeat(2,1fr)!important; }
-            /* Leaderboard compact */
             #leaderboard .text-2xl.font-bold.text-gray-400 { font-size:1rem!important; width:1.5rem!important; }
             #leaderboard .text-2xl.font-bold.text-yellow-700 { font-size:1.25rem!important; }
         }
@@ -114,7 +102,6 @@
             <span>5:00pm ET</span>
         </div>
         <p class="text-yellow-100 max-w-xl mx-auto text-lg mb-8">Track what you've watched with your fellow nominees</p>
-        <!-- Tabs: hidden until user logs in -->
         <div id="pageTabs" class="hidden justify-center gap-4 mt-8">
             <button onclick="switchPage('watchlist')" id="tab-watchlist" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all gold-gradient text-gray-900 shadow-md border-2 border-yellow-600">Watch List</button>
             <button onclick="switchPage('predictions')" id="tab-predictions" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200">Make Your Predictions</button>
@@ -123,7 +110,7 @@
 
     <!-- Name Entry -->
     <div id="nameEntry" class="mb-12 max-w-lg mx-auto fade-in">
-                    <div class="oscar-card p-10 art-deco-border max-w-lg mx-auto">
+        <div class="oscar-card p-10 art-deco-border max-w-lg mx-auto">
             <div class="text-center">
                 <input type="text" id="userName" placeholder="Please enter your name"
                     class="w-full px-6 py-4 border-2 border-yellow-600 bg-white text-gray-800 font-semibold rounded-sm focus:outline-none focus:border-yellow-500 mb-4 text-center text-lg uppercase tracking-wide">
@@ -231,7 +218,6 @@
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3F5SeJ1U-3hRDLn5HwQvbKPdQHfbzjr5sugv2J4TRPoVB6wSVwrZjfcTWRNemCFyz/exec';
 
-// ── JSONP API ─────────────────────────────────────────────────────────────────
 function api(params) {
     return new Promise((resolve, reject) => {
         const cbName = '_cb' + Date.now() + Math.floor(Math.random() * 1000);
@@ -251,7 +237,6 @@ function api(params) {
     });
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg, type='saving') {
     const el = document.getElementById('toast');
@@ -262,7 +247,6 @@ function showToast(msg, type='saving') {
 }
 function hideToast() { document.getElementById('toast').classList.remove('show'); }
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
 const movies = [
     {id:1,title:"Marty Supreme",poster:"https://m.media-amazon.com/images/M/MV5BZTRhYjI1MTItMWYwMi00MjY5LWI1OTktMzQwNzA3MWJlN2QyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Josh Safdie"},{category:"Best Actor",nominee:"Timothée Chalamet"},{category:"Best Original Screenplay",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Cinematography",nominee:"Darius Khondji"},{category:"Best Film Editing",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Production Design",nominee:"Jack Fisk"},{category:"Best Casting",nominee:"Jennifer Venditti"}],streaming:["Theaters"],nominationCount:8,info:"Josh Safdie's ping pong drama with Timothée Chalamet"},
     {id:2,title:"Hamnet",poster:"https://upload.wikimedia.org/wikipedia/en/1/1f/Hamnet_film_poster.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Chloé Zhao"},{category:"Best Actress",nominee:"Jessie Buckley"},{category:"Best Adapted Screenplay",nominee:"Chloé Zhao & Maggie O'Farrell"},{category:"Best Original Score",nominee:"Max Richter"},{category:"Best Costume Design",nominee:"Malgosia Turzanska"},{category:"Best Production Design",nominee:"Fiona Crombie"},{category:"Best Casting",nominee:"Nina Gold"}],streaming:["Theaters"],nominationCount:8,info:"Chloé Zhao's Shakespearean drama"},
@@ -320,14 +304,15 @@ const bonusCategories = [
     {id:'best-international-feature',name:'Best International Feature',nominees:['The Secret Agent (Brazil)','It Was Just an Accident (France)','Sentimental Value (Norway)','Sirāt (Spain)','The Voice of Hind Rajab (Tunisia)']}
 ];
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
 let currentUser = '', currentUserEmoji = '';
 let currentFilter = 'all', currentSubFilter = '', currentPage = 'watchlist';
 let userPredictions = {};
 let allUsersData = [], allPredsData = [];
 window.userWatched = new Set();
 
-// ── LAZY POSTER OBSERVER ──────────────────────────────────────────────────────
+// Build a flat ordered list of all category IDs for auto-advance
+const allCategoryIds = [...oscarCategories, ...bonusCategories].map(c => c.id);
+
 let posterObserver;
 function initLazyPosters() {
     if (posterObserver) posterObserver.disconnect();
@@ -340,25 +325,20 @@ function initLazyPosters() {
                 posterObserver.unobserve(img);
             }
         });
-    }, { rootMargin: '300px' }); // start loading 300px before they scroll into view
+    }, { rootMargin: '300px' });
     document.querySelectorAll('img.lazy-poster[data-src]').forEach(img => posterObserver.observe(img));
 }
 
-// ── EMOJI ─────────────────────────────────────────────────────────────────────
 function selectEmoji(emoji, btn) {
     currentUserEmoji = emoji;
     document.querySelectorAll('.emoji-option').forEach(b => b.style.borderBottom = 'none');
     btn.style.borderBottom = '3px solid #d4af37';
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
     const n = localStorage.getItem('oscarsUserName');
     const e = localStorage.getItem('oscarsUserEmoji');
-    if (n && e) {
-        currentUser = n; currentUserEmoji = e;
-        showMainContent();
-    }
+    if (n && e) { currentUser = n; currentUserEmoji = e; showMainContent(); }
 }
 
 function showMainContent() {
@@ -366,10 +346,8 @@ function showMainContent() {
     document.getElementById('mainContent').classList.remove('hidden');
     document.getElementById('pageTabs').classList.remove('hidden');
     document.getElementById('pageTabs').style.display = 'flex';
-    // Render movies immediately with no sheet data (instant UI)
     renderMovies();
     updateStats();
-    // Then load sheet data in the background
     loadAll();
 }
 
@@ -383,48 +361,34 @@ async function setUserName() {
     showMainContent();
 }
 
-// ── LOAD SHEET DATA ───────────────────────────────────────────────────────────
 async function loadAll() {
     try {
         showToast('Syncing with sheet…', 'saving');
         const data = await api({ action: 'getAll' });
         allUsersData = data.users || [];
         allPredsData = data.predictions || [];
-
         const myRow = allUsersData.find(r => r.name === currentUser);
         if (myRow && myRow.watched) {
             window.userWatched = new Set(myRow.watched.toString().split(',').map(Number).filter(Boolean));
         }
-
         userPredictions = {};
-        allPredsData.filter(r => r.name === currentUser).forEach(r => {
-            userPredictions[r.category] = r.nominee;
-        });
-
-        if (!myRow) {
-            // Fire-and-forget — don't block render on this
-            api({ action: 'saveUser', name: currentUser, emoji: currentUserEmoji, watched: '' });
-        }
-
+        allPredsData.filter(r => r.name === currentUser).forEach(r => { userPredictions[r.category] = r.nominee; });
+        if (!myRow) api({ action: 'saveUser', name: currentUser, emoji: currentUserEmoji, watched: '' });
         hideToast();
     } catch (err) {
         showToast('Sheet sync failed — changes may not save', 'err');
     } finally {
-        // Re-render with up-to-date watched state from sheet
         renderMovies();
         updateStats();
     }
 }
 
-// ── TOGGLE WATCHED ────────────────────────────────────────────────────────────
 async function toggleMovie(movieId) {
     const id = Number(movieId);
     if (window.userWatched.has(id)) window.userWatched.delete(id);
     else window.userWatched.add(id);
-
     renderMovies();
     updateStats();
-
     try {
         showToast('Saving…', 'saving');
         const watchedStr = [...window.userWatched].join(',');
@@ -438,7 +402,6 @@ async function toggleMovie(movieId) {
     }
 }
 
-// ── FILTERS ───────────────────────────────────────────────────────────────────
 function setFilter(type, btn) {
     currentFilter = type; currentSubFilter = '';
     document.querySelectorAll('.filter-btn').forEach(b => {
@@ -447,10 +410,8 @@ function setFilter(type, btn) {
     });
     btn.classList.remove('bg-gray-100','text-gray-800','border-gray-300');
     btn.classList.add('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
-
     const sub = document.getElementById('subFilters');
     sub.innerHTML = ''; sub.classList.remove('open');
-
     if (type === 'streaming') {
         const platforms = [...new Set(movies.flatMap(m => m.streaming))].sort();
         sub.innerHTML = platforms.map(p =>
@@ -478,7 +439,6 @@ function setSubFilter(btn) {
     renderMovies();
 }
 
-// ── RENDER MOVIES ─────────────────────────────────────────────────────────────
 function renderMovies() { filterMovies(); }
 
 function filterMovies() {
@@ -491,7 +451,6 @@ function filterMovies() {
         'Hulu':'https://www.hulu.com/search?q=','Disney+':'https://www.disneyplus.com/search?q=',
         'Paramount+':'https://www.paramountplus.com/search/?query='
     };
-
     let list = movies.filter(m => {
         if (search && !m.title.toLowerCase().includes(search)) return false;
         if (currentFilter==='streaming' && currentSubFilter && !m.streaming.includes(currentSubFilter)) return false;
@@ -505,7 +464,6 @@ function filterMovies() {
             if (!u.watched) return false;
             return u.watched.toString().split(',').map(Number).includes(movie.id);
         }).length;
-
         return `
         <div class="movie-card ${w?'checked-card':''} rounded-sm shadow-lg overflow-hidden fade-in">
             <img data-src="${movie.poster}" alt="${movie.title}"
@@ -543,7 +501,7 @@ function filterMovies() {
                     <div class="flex flex-wrap gap-2">
                         ${movie.streaming.map(p=>`
                             <a href="${(platformUrls[p]||'#')+encodeURIComponent(movie.title)}" target="_blank" rel="noopener noreferrer"
-                                class="text-xs ${w?'bg-red-900 text-yellow-100 border-yellow-600 hover:bg-red-800':'bg-white text-gray-800 border-gray-400 hover:bg-gray-50'} px-3 py-1.5 font-bold border uppercase tracking-wide inline-block transition-all hover:scale-105">${p}</a>
+                                class="text-xs ${w?'bg-red-900 text-yellow-100 border-yellow-600 hover:bg-red-800':'bg-white text-gray-800 border-gray-400 hover:bg-gray-50'} px-3 py-1.5 font-bold border uppercase tracking-wide inline-flex items-center transition-all hover:scale-105">${p}</a>
                         `).join('')}
                     </div>
                 </div>
@@ -554,8 +512,6 @@ function filterMovies() {
             </div>
         </div>`;
     }).join('');
-
-    // Kick off lazy loading after grid is in the DOM
     initLazyPosters();
 }
 
@@ -573,7 +529,6 @@ function toggleNominations(id) {
     if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
 }
 
-// ── PAGE SWITCHING ────────────────────────────────────────────────────────────
 function switchPage(page) {
     currentPage = page;
     document.querySelectorAll('.page-tab').forEach(t => {
@@ -592,7 +547,7 @@ function renderPredictions() {
     const container = document.getElementById('predictionsContainer');
     function catHTML(cat, bonus) {
         return `
-        <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white">
+        <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white${userPredictions[cat.id] ? ' answered' : ''}" id="pred-cat-${cat.id}">
             <h4 class="text-${bonus?'lg':'xl'} font-bold text-gray-900 mb-4 uppercase tracking-wide">${bonus?'⭐':'🏆'} ${cat.name}</h4>
             <div class="space-y-2">
                 ${cat.nominees.map(nom => {
@@ -601,7 +556,7 @@ function renderPredictions() {
                         <input type="radio" name="${cat.id}" value="${nom.replace(/"/g,'&quot;')}"
                             ${userPredictions[cat.id]===nom?'checked':''}
                             class="w-5 h-5 text-yellow-600 focus:ring-yellow-500"
-                            onchange="updatePrediction('${cat.id}','${safe}')">
+                            onchange="updatePrediction('${cat.id}','${safe}',this)">
                         <span class="font-semibold text-gray-800">${nom}</span>
                     </label>`;
                 }).join('')}
@@ -621,7 +576,48 @@ function renderPredictions() {
         </div>`;
 }
 
-function updatePrediction(catId, nominee) { userPredictions[catId] = nominee; }
+function updatePrediction(catId, nominee, radioEl) {
+    userPredictions[catId] = nominee;
+
+    // Mark the category card as answered
+    const card = document.getElementById(`pred-cat-${catId}`);
+    if (card) card.classList.add('answered');
+
+    // Auto-advance: find the next unanswered category and scroll to it
+    const currentIdx = allCategoryIds.indexOf(catId);
+    if (currentIdx === -1) return;
+
+    // Look for the next category that hasn't been answered yet
+    let nextId = null;
+    for (let i = currentIdx + 1; i < allCategoryIds.length; i++) {
+        if (!userPredictions[allCategoryIds[i]]) {
+            nextId = allCategoryIds[i];
+            break;
+        }
+    }
+    // If all remaining are answered, just go to the one immediately after
+    if (!nextId && currentIdx + 1 < allCategoryIds.length) {
+        nextId = allCategoryIds[currentIdx + 1];
+    }
+
+    if (nextId) {
+        setTimeout(() => {
+            const nextCard = document.getElementById(`pred-cat-${nextId}`);
+            if (nextCard) {
+                nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Brief highlight flash on the next card
+                nextCard.style.transition = 'box-shadow 0.3s';
+                nextCard.style.boxShadow = '0 0 0 3px #d4af37';
+                setTimeout(() => { nextCard.style.boxShadow = ''; }, 800);
+            }
+        }, 300);
+    } else {
+        // All done — scroll to submit
+        setTimeout(() => {
+            document.getElementById('submitSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    }
+}
 
 async function savePredictions() {
     if (!Object.keys(userPredictions).length) { showSaveStatus('Please make at least one prediction!','error'); return; }
@@ -669,7 +665,6 @@ async function clearMyData() {
     }
 }
 
-// ── LEADERBOARD ───────────────────────────────────────────────────────────────
 function renderLeaderboard() {
     const el = document.getElementById('leaderboard');
     const guests = allUsersData.map(u => {
