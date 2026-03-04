@@ -9,384 +9,102 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        h1, h2, h3 {
-            font-family: 'Cormorant Garamond', serif;
-            letter-spacing: 0.02em;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-        }
-        
-        .gold-gradient {
-            background: linear-gradient(135deg, #d4af37 0%, #f4d58d 50%, #d4af37 100%);
-        }
-        
-        .burgundy-gradient {
-            background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%);
-        }
-        
-        .art-deco-border {
-            border: 3px solid;
-            border-image: linear-gradient(135deg, #d4af37, #f4d58d, #d4af37) 1;
-            position: relative;
-        }
-        
-        .art-deco-border::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            left: -6px;
-            right: -6px;
-            bottom: -6px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            pointer-events: none;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .float {
-            animation: float 4s ease-in-out infinite;
-        }
-        
-        .shimmer {
-            background: linear-gradient(90deg, #d4af37 0%, #f4d58d 50%, #d4af37 100%);
-            background-size: 200% auto;
-            animation: shimmer 3s linear infinite;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .movie-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(135deg, #f5f5dc 0%, #faf8f3 100%);
-            border: 2px solid #d4af37;
-            position: relative;
-        }
-        
-        .movie-card::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            pointer-events: none;
-        }
-        
-        .movie-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-            border-color: #f4d58d;
-        }
-        
-        .checked-card {
-            background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%);
-            border-color: #d4af37;
-        }
-        
-        .checked-card * {
-            color: #f5f5dc !important;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%);
-            color: #f5f5dc;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            border: 2px solid #d4af37;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
-            border-color: #f4d58d;
-        }
-        
-        .oscar-card {
-            background: linear-gradient(135deg, #f5f5dc 0%, #faf8f3 100%);
-            border: 3px solid #d4af37;
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-        }
-        
-        .guest-badge {
-            background: linear-gradient(135deg, #f5f5dc 0%, #faf8f3 100%);
-            border: 2px solid #d4af37;
-            transition: all 0.3s ease;
-        }
-        
-        .guest-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
-        }
-        
-        .guest-badge.current-user {
-            background: linear-gradient(135deg, #800020 0%, #a0143e 100%);
-            border-color: #d4af37;
-        }
-        
-        .guest-badge.current-user * {
-            color: #f5f5dc !important;
-        }
-            color: #f5f5dc !important;
-        }
-        
-        .nomination-badge {
-            position: relative;
-        }
-        
-        .nomination-badge:hover::after {
-            content: attr(data-nominee);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-bottom: 8px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: #d4af37;
-            font-size: 11px;
-            font-weight: 600;
-            white-space: nowrap;
-            border-radius: 4px;
-            border: 1px solid #d4af37;
-            z-index: 1000;
-            pointer-events: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        
-        .nomination-badge[data-nominee=""]:hover::after {
-            display: none;
-        }
-        
-        /* Mobile Optimizations */
-        @media (max-width: 768px) {
-            body {
-                font-size: 14px;
-            }
-            
-            h1 {
-                font-size: 2.5rem !important;
-            }
-            
-            h2 {
-                font-size: 1.75rem !important;
-            }
-            
-            .oscar-card {
-                padding: 1rem !important;
-            }
-            
-            .movie-card {
-                margin-bottom: 1.5rem;
-            }
-            
-            /* Larger touch targets for mobile */
-            button {
-                min-height: 44px;
-            }
-            
-            input[type="radio"], input[type="checkbox"] {
-                min-height: 20px;
-                min-width: 20px;
-            }
-            
-            /* Emoji selector - better mobile layout */
-            .emoji-option {
-                font-size: 2.5rem !important;
-                padding: 1rem !important;
-                background: transparent !important;
-            }
-            
-            .emoji-option:hover {
-                background: rgba(212, 175, 55, 0.2) !important;
-            }
-            
-            /* Search bar - prevent iOS zoom */
-            #movieSearch {
-                font-size: 16px !important;
-            }
-            
-            input[type="text"] {
-                font-size: 16px !important;
-            }
-            
-            /* Stats cards */
-            .grid {
-                gap: 1rem !important;
-            }
-            
-            /* Filter buttons */
-            .filter-btn {
-                font-size: 0.75rem !important;
-                padding: 0.5rem 1rem !important;
-            }
-            
-            /* Movie poster sizing */
-            .movie-card img {
-                max-height: 350px !important;
-            }
-            
-            /* Nomination badges */
-            .nomination-badge {
-                font-size: 0.7rem !important;
-                padding: 0.4rem 0.6rem !important;
-            }
-            
-            /* Predictions */
-            .prediction-category {
-                padding: 1rem !important;
-            }
-            
-            /* Better readability */
-            .text-5xl {
-                font-size: 2.5rem !important;
-            }
-            
-            .text-3xl {
-                font-size: 1.5rem !important;
-            }
-            
-            .text-2xl {
-                font-size: 1.25rem !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem !important;
-            }
-            
-            h2 {
-                font-size: 1.5rem !important;
-            }
-            
-            .movie-card img {
-                max-height: 300px !important;
-            }
-            
-            /* Single column layout for very small screens */
-            #moviesGrid {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .text-5xl {
-                font-size: 2rem !important;
-            }
-        }
+        * { font-family: 'Montserrat', sans-serif; }
+        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; letter-spacing: 0.02em; }
+        body { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%); }
+        .gold-gradient { background: linear-gradient(135deg, #d4af37 0%, #f4d58d 50%, #d4af37 100%); }
+        .art-deco-border { border: 3px solid; border-image: linear-gradient(135deg, #d4af37, #f4d58d, #d4af37) 1; position: relative; }
+        .art-deco-border::before { content: ''; position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px; border: 1px solid rgba(212,175,55,0.3); pointer-events: none; }
+        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(5deg)} }
+        @keyframes shimmer { 0%{background-position:-1000px 0} 100%{background-position:1000px 0} }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        .float { animation: float 4s ease-in-out infinite; }
+        .shimmer { background: linear-gradient(90deg,#d4af37 0%,#f4d58d 50%,#d4af37 100%); background-size:200% auto; animation:shimmer 3s linear infinite; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        .movie-card { transition:all 0.4s cubic-bezier(0.4,0,0.2,1); background:linear-gradient(135deg,#f5f5dc 0%,#faf8f3 100%); border:2px solid #d4af37; position:relative; }
+        .movie-card::before { content:''; position:absolute; inset:-2px; border:1px solid rgba(212,175,55,0.2); pointer-events:none; }
+        .movie-card:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(212,175,55,0.3); border-color:#f4d58d; }
+        .checked-card { background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%); border-color:#d4af37; }
+        .checked-card * { color:#f5f5dc !important; }
+        .btn-primary { background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%); color:#f5f5dc; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; transition:all 0.3s ease; border:2px solid #d4af37; }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 25px rgba(212,175,55,0.4); border-color:#f4d58d; }
+        .oscar-card { background:linear-gradient(135deg,#f5f5dc 0%,#faf8f3 100%); border:3px solid #d4af37; box-shadow:0 10px 30px rgba(212,175,55,0.2); }
+        .nomination-badge { position:relative; }
+        .nomination-badge:hover::after { content:attr(data-nominee); position:absolute; bottom:100%; left:50%; transform:translateX(-50%); margin-bottom:8px; padding:8px 12px; background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%); color:#d4af37; font-size:11px; font-weight:600; white-space:nowrap; border-radius:4px; border:1px solid #d4af37; z-index:1000; pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,0.3); }
+        .nomination-badge[data-nominee=""]:hover::after { display:none; }
+        #subFilters { display:none; flex-wrap:wrap; gap:0.5rem; margin-top:1rem; }
+        #subFilters.open { display:flex; }
+        .toast { position:fixed; bottom:1.5rem; right:1.5rem; padding:.75rem 1.25rem; font-size:.8rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; z-index:9999; border-radius:2px; opacity:0; transition:opacity .3s; pointer-events:none; border:2px solid; }
+        .toast.show { opacity:1; }
+        .toast-saving { background:#1a1a1a; color:#d4af37; border-color:#d4af37; }
+        .toast-ok  { background:#f0fdf4; color:#166534; border-color:#16a34a; }
+        .toast-err { background:#fef2f2; color:#991b1b; border-color:#dc2626; }
+        /* Poster placeholder shimmer while lazy-loading */
+        .poster-placeholder { background: linear-gradient(90deg, #e8e0cc 25%, #f5f0e8 50%, #e8e0cc 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; min-height: 200px; }
+        @media(max-width:768px){body{font-size:14px}h1{font-size:2.5rem!important}h2{font-size:1.75rem!important}.oscar-card{padding:1rem!important}.movie-card{margin-bottom:1.5rem}button{min-height:44px}#movieSearch,input[type="text"]{font-size:16px!important}.filter-btn{font-size:.75rem!important;padding:.5rem 1rem!important}.nomination-badge{font-size:.7rem!important;padding:.4rem .6rem!important}.text-5xl{font-size:2.5rem!important}.text-3xl{font-size:1.5rem!important}.text-2xl{font-size:1.25rem!important}}
+        @media(max-width:480px){h1{font-size:2rem!important}h2{font-size:1.5rem!important}#moviesGrid{grid-template-columns:1fr!important}.text-5xl{font-size:2rem!important}}
     </style>
 </head>
 <body class="min-h-screen">
-    <div id="app" class="container mx-auto px-4 py-12 max-w-7xl">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <div class="float mb-6">
-                <span class="text-8xl" style="filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));">🏆</span>
-            </div>
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight shimmer">
-                and the oscar goes to….
-            </h1>
-            <h2 class="text-4xl md:text-5xl font-bold text-yellow-500 mb-6">
-                balcony bites
-            </h2>
-            <div class="flex items-center justify-center gap-4 text-lg text-yellow-200 mb-3 flex-wrap">
-                <span class="font-semibold">Sunday, March 15</span>
-                <span class="text-yellow-500">•</span>
-                <span>5:00pm ET</span>
-            </div>
-            <p class="text-yellow-100 max-w-xl mx-auto text-lg mb-8">
-                Track what you've watched with your fellow nominees
-            </p>
-            
-            <!-- Navigation Tabs -->
-            <div class="flex justify-center gap-4 mt-8">
-                <button 
-                    onclick="switchPage('watchlist')" 
-                    id="tab-watchlist"
-                    class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all gold-gradient text-gray-900 shadow-md border-2 border-yellow-600"
-                >
-                    Watch List
-                </button>
-                <button 
-                    onclick="switchPage('predictions')" 
-                    id="tab-predictions"
-                    class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200"
-                >
-                    Make Your Predictions
-                </button>
-            </div>
-        </div>
 
-        <!-- Name Entry -->
-        <div id="nameEntry" class="mb-12 max-w-lg mx-auto fade-in">
-            <div class="oscar-card p-10 art-deco-border">
-                <div class="text-center mb-8">
-                <input 
-                    type="text" 
-                    id="userName" 
-                    placeholder="Please enter your name"
-                    class="w-full px-6 py-4 border-2 border-yellow-600 bg-white text-gray-800 font-semibold rounded-sm focus:outline-none focus:border-yellow-500 mb-2 text-center text-lg uppercase tracking-wide"
-                >
-                <p class="text-sm text-gray-400 mb-6 uppercase tracking-wide text-center font-semibold">Select an emoji</p>
-                <div class="mb-6">
-                    <div class="grid grid-cols-6 gap-2">
-                        <button type="button" onclick="selectEmoji('🎞️', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🎞️</button>
-                        <button type="button" onclick="selectEmoji('🎥', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🎥</button>
-                        <button type="button" onclick="selectEmoji('🎬', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🎬</button>
-                        <button type="button" onclick="selectEmoji('📸', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">📸</button>
-                        <button type="button" onclick="selectEmoji('🤩', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🤩</button>
-                        <button type="button" onclick="selectEmoji('🌟', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🌟</button>
-                        <button type="button" onclick="selectEmoji('🍿', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🍿</button>
-                        <button type="button" onclick="selectEmoji('🍾', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🍾</button>
-                        <button type="button" onclick="selectEmoji('🥂', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🥂</button>
-                        <button type="button" onclick="selectEmoji('🏓', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🏓</button>
-                        <button type="button" onclick="selectEmoji('🧛', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🧛</button>
-                        <button type="button" onclick="selectEmoji('👽', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">👽</button>
-                        <button type="button" onclick="selectEmoji('📝', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">📝</button>
-                        <button type="button" onclick="selectEmoji('💣', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">💣</button>
-                        <button type="button" onclick="selectEmoji('🧟', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🧟</button>
-                        <button type="button" onclick="selectEmoji('🏎️', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🏎️</button>
-                        <button type="button" onclick="selectEmoji('🚂', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🚂</button>
-                        <button type="button" onclick="selectEmoji('🧪', event)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🧪</button>
-                    </div>
+<div class="toast toast-saving" id="toast"></div>
+
+<div id="app" class="container mx-auto px-4 py-12 max-w-7xl">
+    <!-- Header -->
+    <div class="text-center mb-12">
+        <div class="float mb-6"><span class="text-8xl" style="filter:drop-shadow(0 0 20px rgba(212,175,55,0.5))">🏆</span></div>
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight shimmer">and the oscar goes to….</h1>
+        <h2 class="text-4xl md:text-5xl font-bold text-yellow-500 mb-6">balcony bites</h2>
+        <div class="flex items-center justify-center gap-4 text-lg text-yellow-200 mb-3 flex-wrap">
+            <span class="font-semibold">Sunday, March 15</span>
+            <span class="text-yellow-500">•</span>
+            <span>5:00pm ET</span>
+        </div>
+        <p class="text-yellow-100 max-w-xl mx-auto text-lg mb-8">Track what you've watched with your fellow nominees</p>
+        <!-- Tabs: hidden until user logs in -->
+        <div id="pageTabs" class="hidden justify-center gap-4 mt-8">
+            <button onclick="switchPage('watchlist')" id="tab-watchlist" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all gold-gradient text-gray-900 shadow-md border-2 border-yellow-600">Watch List</button>
+            <button onclick="switchPage('predictions')" id="tab-predictions" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200">Make Your Predictions</button>
+        </div>
+    </div>
+
+    <!-- Name Entry -->
+    <div id="nameEntry" class="mb-12 max-w-lg mx-auto fade-in">
+        <div class="oscar-card p-10 art-deco-border">
+            <div class="text-center">
+                <input type="text" id="userName" placeholder="Please enter your name"
+                    class="w-full px-6 py-4 border-2 border-yellow-600 bg-white text-gray-800 font-semibold rounded-sm focus:outline-none focus:border-yellow-500 mb-4 text-center text-lg uppercase tracking-wide">
+                <p class="text-sm text-gray-400 mb-4 uppercase tracking-wide font-semibold">Select an emoji</p>
+                <div class="grid grid-cols-6 gap-2 mb-6">
+                    <button type="button" onclick="selectEmoji('🎞️',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🎞️</button>
+                    <button type="button" onclick="selectEmoji('🎥',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🎥</button>
+                    <button type="button" onclick="selectEmoji('🎬',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🎬</button>
+                    <button type="button" onclick="selectEmoji('📸',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">📸</button>
+                    <button type="button" onclick="selectEmoji('🤩',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🤩</button>
+                    <button type="button" onclick="selectEmoji('🌟',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🌟</button>
+                    <button type="button" onclick="selectEmoji('🍿',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🍿</button>
+                    <button type="button" onclick="selectEmoji('🍾',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🍾</button>
+                    <button type="button" onclick="selectEmoji('🥂',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🥂</button>
+                    <button type="button" onclick="selectEmoji('🏓',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🏓</button>
+                    <button type="button" onclick="selectEmoji('🧛',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🧛</button>
+                    <button type="button" onclick="selectEmoji('👽',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">👽</button>
+                    <button type="button" onclick="selectEmoji('📝',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">📝</button>
+                    <button type="button" onclick="selectEmoji('💣',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">💣</button>
+                    <button type="button" onclick="selectEmoji('🧟',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🧟</button>
+                    <button type="button" onclick="selectEmoji('🏎️',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🏎️</button>
+                    <button type="button" onclick="selectEmoji('🚂',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🚂</button>
+                    <button type="button" onclick="selectEmoji('🧪',this)" class="emoji-option text-3xl p-3 bg-transparent hover:bg-yellow-50 transition-all rounded-md flex items-center justify-center">🧪</button>
                 </div>
-                <button 
-                    onclick="setUserName()" 
-                    class="btn-primary w-full py-4 rounded-sm text-lg shadow-lg"
-                >
-                    Enter the Ceremony
-                </button>
+                <button onclick="setUserName()" class="btn-primary w-full py-4 rounded-sm text-lg shadow-lg">Enter the Ceremony</button>
             </div>
         </div>
+    </div>
 
-        <!-- Main Content (hidden until name is set) -->
-        <div id="mainContent" class="hidden">
-            
-            <!-- Watchlist Page -->
-            <div id="page-watchlist" class="page-content">
-            <!-- Stats Bar -->
+    <!-- Main Content -->
+    <div id="mainContent" class="hidden">
+
+        <!-- Watchlist Page -->
+        <div id="page-watchlist" class="page-content">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="oscar-card p-6 text-center">
                     <div class="text-5xl font-bold text-yellow-600 mb-2" id="yourProgress">0/30</div>
@@ -397,1309 +115,541 @@
                     <div class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Academy Members</div>
                 </div>
             </div>
-            
-            <!-- Party Awards Preview -->
+
             <div class="oscar-card p-6 mb-6 art-deco-border">
-                <h3 class="text-2xl font-bold text-center mb-4" style="background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                    In the lead...
-                </h3>
+                <h3 class="text-2xl font-bold text-center mb-4" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">In the lead…</h3>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center text-sm">
-                    <div>
-                        <div class="font-bold" style="color: #800020;">🏆 Most Accurate</div>
-                        <div class="text-xs text-gray-600">Best predictions</div>
-                    </div>
-                    <div>
-                        <div class="font-bold" style="color: #800020;">📺 Top Streamer</div>
-                        <div class="text-xs text-gray-600">Most streaming films</div>
-                    </div>
-                    <div>
-                        <div class="font-bold" style="color: #800020;">🎬 Cinephile</div>
-                        <div class="text-xs text-gray-600">Most movies watched</div>
-                    </div>
-                    <div>
-                        <div class="font-bold" style="color: #800020;">🎟️ Theater Buff</div>
-                        <div class="text-xs text-gray-600">Most theater movies</div>
-                    </div>
-                    <div>
-                        <div class="font-bold" style="color: #800020;">⭐ Bonus Champion</div>
-                        <div class="text-xs text-gray-600">Most bonus picks</div>
-                    </div>
+                    <div><div class="font-bold" style="color:#800020">🏆 Most Accurate</div><div class="text-xs text-gray-600">Best predictions</div></div>
+                    <div><div class="font-bold" style="color:#800020">📺 Top Streamer</div><div class="text-xs text-gray-600">Most streaming films</div></div>
+                    <div><div class="font-bold" style="color:#800020">🎬 Cinephile</div><div class="text-xs text-gray-600">Most movies watched</div></div>
+                    <div><div class="font-bold" style="color:#800020">🎟️ Theater Buff</div><div class="text-xs text-gray-600">Most theater movies</div></div>
+                    <div><div class="font-bold" style="color:#800020">⭐ Bonus Champion</div><div class="text-xs text-gray-600">Most bonus picks</div></div>
                 </div>
             </div>
-            
+
             <div class="text-center mb-10">
                 <p class="text-base text-white max-w-3xl mx-auto leading-relaxed font-medium">
-                    Search for films, tap the 👁️ eye icon to mark as watched, expand nominations to see details, and click platforms to watch. Your progress saves automatically as you go.
+                    Search for films, tap the 👁️ eye icon to mark as watched, expand nominations to see details, and click platforms to watch. Your progress saves automatically.
                 </p>
             </div>
 
-            <!-- Search and Filters -->
             <div class="oscar-card p-6 mb-10">
                 <div class="flex flex-wrap items-center gap-4">
-                    <!-- Search Bar -->
                     <div class="flex-1 min-w-[300px]">
-                        <input 
-                            type="text" 
-                            id="movieSearch" 
-                            placeholder="Search by name or title" 
+                        <input type="text" id="movieSearch" placeholder="Search by name or title"
                             class="w-full px-4 py-3 border-2 border-gray-300 bg-white text-gray-800 font-semibold rounded-md focus:outline-none focus:border-yellow-600 text-sm"
-                            oninput="filterMovies()"
-                        >
+                            oninput="filterMovies()">
                     </div>
-                    
-                    <!-- Filter Buttons -->
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="setFilter('all')" class="filter-btn px-5 py-3 font-bold transition-all gold-gradient text-gray-900 shadow-md uppercase tracking-wide text-xs border-2 border-yellow-600 rounded-md">
-                            All Films
-                        </button>
-                        <button onclick="setFilter('streaming')" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">
-                            By Platform
-                        </button>
-                        <button onclick="setFilter('category')" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">
-                            By Category
-                        </button>
+                        <button onclick="setFilter('all',this)" class="filter-btn px-5 py-3 font-bold transition-all gold-gradient text-gray-900 shadow-md uppercase tracking-wide text-xs border-2 border-yellow-600 rounded-md">All Films</button>
+                        <button onclick="setFilter('streaming',this)" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">By Platform</button>
+                        <button onclick="setFilter('category',this)" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">By Category</button>
                     </div>
                 </div>
-                
-                <!-- Sub-filters -->
-                <div id="subFilters" class="hidden flex-wrap gap-2 mt-4"></div>
+                <div id="subFilters"></div>
             </div>
 
-            <!-- Movies Grid -->
-            <div id="moviesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Movies will be inserted here -->
-            </div>
-            </div>
-            <!-- End Watchlist Page -->
-            
-            <!-- Predictions Page -->
-            <div id="page-predictions" class="page-content hidden">
-                <div class="oscar-card p-8 mb-10 art-deco-border max-w-4xl mx-auto">
-                    <h3 class="text-3xl font-bold mb-2 text-center" style="background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                        Your Oscar Predictions
-                    </h3>
-                    <p class="text-sm text-gray-600 mb-2 uppercase tracking-wide text-center font-semibold">Vote for who you think will win in each category</p>
-                    <p class="text-xs text-gray-500 mb-6 text-center italic">You can update your picks anytime before the ceremony</p>
-                    
-                    <div id="predictionsContainer" class="space-y-6">
-                        <!-- Prediction categories will be inserted here -->
-                    </div>
-                    
-                    <div id="submitSection" class="flex gap-4 mt-8">
-                        <button 
-                            onclick="savePredictions()" 
-                            class="btn-primary flex-1 py-4 rounded-sm text-lg shadow-lg"
-                        >
-                            Save My Predictions
-                        </button>
-                        <button 
-                            onclick="clearMyData()" 
-                            class="px-6 py-4 rounded-sm text-sm font-bold uppercase tracking-wide bg-gray-100 text-gray-700 border-2 border-gray-300 hover:bg-gray-200 transition-all"
-                        >
-                            Clear My Data
-                        </button>
-                    </div>
-                    
-                    <div id="saveStatus" class="hidden mt-4 p-4 rounded-sm text-center font-semibold"></div>
+            <div id="moviesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <!-- Predictions Page -->
+        <div id="page-predictions" class="page-content hidden">
+            <div class="oscar-card p-8 mb-10 art-deco-border max-w-4xl mx-auto">
+                <h3 class="text-3xl font-bold mb-2 text-center" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Your Oscar Predictions</h3>
+                <p class="text-sm text-gray-600 mb-2 uppercase tracking-wide text-center font-semibold">Vote for who you think will win in each category</p>
+                <p class="text-xs text-gray-500 mb-6 text-center italic">You can update your picks anytime before the ceremony</p>
+                <div id="predictionsContainer" class="space-y-6"></div>
+                <div id="submitSection" class="flex gap-4 mt-8">
+                    <button onclick="savePredictions()" class="btn-primary flex-1 py-4 rounded-sm text-lg shadow-lg">Save My Predictions</button>
+                    <button onclick="clearMyData()" class="px-6 py-4 rounded-sm text-sm font-bold uppercase tracking-wide bg-gray-100 text-gray-700 border-2 border-gray-300 hover:bg-gray-200 transition-all">Clear My Data</button>
                 </div>
-                
-                <!-- Leaderboard -->
-                <div class="oscar-card p-8 art-deco-border max-w-4xl mx-auto mt-10">
-                    <h3 class="text-3xl font-bold mb-2 text-center" style="background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                        Prediction Leaderboard
-                    </h3>
-                    <p class="text-sm text-gray-600 mb-6 uppercase tracking-wide text-center font-semibold">Who's got the best predictions?</p>
-                    
-                    <div id="leaderboard" class="space-y-3">
-                        <!-- Leaderboard will be inserted here -->
-                    </div>
-                </div>
+                <div id="saveStatus" class="hidden mt-4 p-4 rounded-sm text-center font-semibold"></div>
             </div>
-            <!-- End Predictions Page -->
-            
+
+            <div class="oscar-card p-8 art-deco-border max-w-4xl mx-auto mt-10">
+                <h3 class="text-3xl font-bold mb-2 text-center" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prediction Leaderboard</h3>
+                <p class="text-sm text-gray-600 mb-6 uppercase tracking-wide text-center font-semibold">Who's got the best predictions?</p>
+                <div id="leaderboard" class="space-y-3"></div>
+            </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // Movie data with nominations and streaming info
-        const movies = [
-            // Still in Theaters
-            {
-                id: 1,
-                title: "Marty Supreme",
-                poster: "https://m.media-amazon.com/images/M/MV5BZTRhYjI1MTItMWYwMi00MjY5LWI1OTktMzQwNzA3MWJlN2QyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Director", nominee: "Josh Safdie" },
-                    { category: "Best Actor", nominee: "Timothée Chalamet" },
-                    { category: "Best Original Screenplay", nominee: "Ronald Bronstein & Josh Safdie" },
-                    { category: "Best Cinematography", nominee: "Darius Khondji" },
-                    { category: "Best Film Editing", nominee: "Ronald Bronstein & Josh Safdie" },
-                    { category: "Best Production Design", nominee: "Jack Fisk" },
-                    { category: "Best Casting", nominee: "Jennifer Venditti" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 8,
-                info: "Josh Safdie's ping pong drama with Timothée Chalamet"
-            },
-            {
-                id: 2,
-                title: "Hamnet",
-                poster: "https://upload.wikimedia.org/wikipedia/en/1/1f/Hamnet_film_poster.jpeg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Director", nominee: "Chloé Zhao" },
-                    { category: "Best Actress", nominee: "Jessie Buckley" },
-                    { category: "Best Adapted Screenplay", nominee: "Chloé Zhao & Maggie O'Farrell" },
-                    { category: "Best Original Score", nominee: "Max Richter" },
-                    { category: "Best Costume Design", nominee: "Malgosia Turzanska" },
-                    { category: "Best Production Design", nominee: "Fiona Crombie" },
-                    { category: "Best Casting", nominee: "Nina Gold" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 8,
-                info: "Chloé Zhao's Shakespearean drama"
-            },
-            {
-                id: 3,
-                title: "Zootopia 2",
-                poster: "https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Animated Feature", nominee: "Jared Bush, Byron Howard" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "The sequel to Disney's beloved animated hit"
-            },
-            {
-                id: 4,
-                title: "The Secret Agent",
-                poster: "https://resizing.flixster.com/YBTbc6VIpar20XFi7a0tCAPmcd8=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzljMTgwZDBmLWRiYTgtNDZkYi04M2NhLTcxZGZiOTU0N2NhMy5qcGc=",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Actor", nominee: "Wagner Moura" },
-                    { category: "Best International Feature", nominee: "Brazil" },
-                    { category: "Best Casting", nominee: "Gabriel Domingues" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 4,
-                info: "Brazilian drama with Wagner Moura"
-            },
-            {
-                id: 5,
-                title: "Sentimental Value",
-                poster: "https://miro.medium.com/1*XBRV5ALCoSNp3r4yK4MsJg.jpeg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Director", nominee: "Joachim Trier" },
-                    { category: "Best Actress", nominee: "Renate Reinsve" },
-                    { category: "Best Supporting Actor", nominee: "Stellan Skarsgård" },
-                    { category: "Best Supporting Actress", nominee: "Elle Fanning & Inga Ibsdotter Lilleaas" },
-                    { category: "Best Original Screenplay", nominee: "Eskil Vogt & Joachim Trier" },
-                    { category: "Best Film Editing", nominee: "Olivier Bugge Coutté" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 8,
-                info: "Joachim Trier's Norwegian drama - International Feature nominee"
-            },
-            // Netflix
-            {
-                id: 6,
-                title: "Frankenstein",
-                poster: "https://upload.wikimedia.org/wikipedia/en/9/94/Frankenstein_2025_film_poster.jpg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Supporting Actor", nominee: "Jacob Elordi" },
-                    { category: "Best Adapted Screenplay", nominee: "Guillermo del Toro" },
-                    { category: "Best Original Score", nominee: "Alexandre Desplat" },
-                    { category: "Best Cinematography", nominee: "Dan Laustsen" },
-                    { category: "Best Makeup and Hairstyling", nominee: "Mike Hill, Jordan Samuel, Cliona Furey" },
-                    { category: "Best Costume Design", nominee: "Kate Hawley" },
-                    { category: "Best Production Design", nominee: "Tamara Deverell" },
-                    { category: "Best Sound", nominee: "Greg Chapman, Nathan Robitaille, Nelson Ferreira, Christian Cooke, Brad Zoern" }
-                ],
-                streaming: ["Netflix"],
-                nominationCount: 9,
-                info: "Guillermo del Toro's passion project"
-            },
-            {
-                id: 7,
-                title: "KPop Demon Hunters",
-                poster: "https://m.media-amazon.com/images/M/MV5BNTBiYWJlMjQtOTIyMy00NTY4LWFhOWItOWZhNzc3NGMyMjc2XkEyXkFqcGc@._V1_.jpg",
-                nominations: [
-                    { category: "Best Animated Feature", nominee: "Maggie Kang, Chris Appelhans" },
-                    { category: "Best Original Song", nominee: "'Golden' - EJAE, Mark Sonnenblick" }
-                ],
-                streaming: ["Netflix"],
-                nominationCount: 2,
-                info: "Animated adventure with original song 'Golden'"
-            },
-            {
-                id: 8,
-                title: "Blue Moon",
-                poster: "https://m.media-amazon.com/images/S/pv-target-images/164bb79469d2e6a5af0ac7bd4f8a2a164392526a7e16e201eea3566f466c334f.jpg",
-                nominations: [
-                    { category: "Best Actor", nominee: "Ethan Hawke" },
-                    { category: "Best Original Screenplay", nominee: "Robert Kaplow" }
-                ],
-                streaming: ["Netflix"],
-                nominationCount: 2,
-                info: "Starring Ethan Hawke in an intimate character study"
-            },
-            {
-                id: 9,
-                title: "Train Dreams",
-                poster: "https://upload.wikimedia.org/wikipedia/en/thumb/5/58/Train_Dreams_poster.jpeg/250px-Train_Dreams_poster.jpeg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Adapted Screenplay", nominee: "Clint Bentley & Greg Kwedar" },
-                    { category: "Best Original Song", nominee: "'Train Dreams' - Nick Cave" },
-                    { category: "Best Cinematography", nominee: "Adolpho Veloso" }
-                ],
-                streaming: ["Netflix"],
-                nominationCount: 4,
-                info: "Based on Denis Johnson's novella with Nick Cave song"
-            },
-            // HBO Max
-            {
-                id: 10,
-                title: "One Battle after Another",
-                poster: "https://batman-on-film.com/wp-content/uploads/2025/09/onebattleafteranother_poster.webp",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Director", nominee: "Paul Thomas Anderson" },
-                    { category: "Best Actor", nominee: "Leonardo DiCaprio" },
-                    { category: "Best Supporting Actor", nominee: "Benicio Del Toro & Sean Penn" },
-                    { category: "Best Supporting Actress", nominee: "Teyana Taylor" },
-                    { category: "Best Adapted Screenplay", nominee: "Paul Thomas Anderson" },
-                    { category: "Best Original Score", nominee: "Jonny Greenwood" },
-                    { category: "Best Cinematography", nominee: "Michael Bauman" },
-                    { category: "Best Film Editing", nominee: "Andy Jurgensen" },
-                    { category: "Best Production Design", nominee: "Florencia Martin" },
-                    { category: "Best Sound", nominee: "José Antonio García, Christopher Scarabosio, Tony Villaflor" },
-                    { category: "Best Casting", nominee: "Cassandra Kulukundis" }
-                ],
-                streaming: ["HBO Max"],
-                nominationCount: 12,
-                info: "Paul Thomas Anderson's revolutionary saga"
-            },
-            {
-                id: 11,
-                title: "Sinners",
-                poster: "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Sinners_%282025_film%29_poster.jpg/250px-Sinners_%282025_film%29_poster.jpg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Director", nominee: "Ryan Coogler" },
-                    { category: "Best Actor", nominee: "Michael B. Jordan" },
-                    { category: "Best Supporting Actor", nominee: "Delroy Lindo" },
-                    { category: "Best Supporting Actress", nominee: "Wunmi Mosaku" },
-                    { category: "Best Original Screenplay", nominee: "Ryan Coogler" },
-                    { category: "Best Original Score", nominee: "Ludwig Göransson" },
-                    { category: "Best Cinematography", nominee: "Autumn Durald Arkapaw" },
-                    { category: "Best Visual Effects", nominee: "Michael Ralla, Espen Nordahl, Guido Wolter, Donnie Dean" },
-                    { category: "Best Film Editing", nominee: "Michael P. Shawver" },
-                    { category: "Best Makeup and Hairstyling", nominee: "Ken Diaz, Mike Fontaine, Shunika Terry" },
-                    { category: "Best Costume Design", nominee: "Ruth E. Carter" },
-                    { category: "Best Production Design", nominee: "Hannah Beachler" },
-                    { category: "Best Sound", nominee: "Chris Welcker, Benjamin A. Burtt, Felipe Pacheco, Brandon Proctor, Steve Boeddeker" },
-                    { category: "Best Casting", nominee: "Francine Maisler" },
-                    { category: "Best Original Song", nominee: "'I Lied To You' - Raphael Saadiq & Ludwig Göransson" }
-                ],
-                streaming: ["HBO Max"],
-                nominationCount: 16,
-                info: "Ryan Coogler's vampire epic - record-breaking 16 nominations!"
-            },
-            {
-                id: 12,
-                title: "If I Had Legs I\\'d Kick You",
-                poster: "https://m.media-amazon.com/images/M/MV5BMGRlMjIzMDctNzNkMS00MzEwLTlhZWEtM2FjYmE1ZmFjMzZlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Actress", nominee: "Rose Byrne" }
-                ],
-                streaming: ["HBO Max"],
-                nominationCount: 1,
-                info: "Rose Byrne's powerful performance"
-            },
-            {
-                id: 13,
-                title: "Weapons",
-                poster: "https://m.media-amazon.com/images/M/MV5BNTBhNWJjZWItYzY3NS00M2NkLThmOWYtYTlmNzBmN2UxZWFjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Supporting Actress", nominee: "Amy Madigan" }
-                ],
-                streaming: ["HBO Max"],
-                nominationCount: 1,
-                info: "Thriller featuring Amy Madigan"
-            },
-            // Peacock
-            {
-                id: 14,
-                title: "Song Sung Blue",
-                poster: "https://resizing.flixster.com/q35fmE6JW4sTFAO0sbhJdpfzj9c=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzcwNWE0M2ZkLTBiMGEtNDNmNC1iMGY1LTU1ZmNlNjdjYzNiZC5qcGc=",
-                nominations: [
-                    { category: "Best Actress", nominee: "Kate Hudson" }
-                ],
-                streaming: ["Peacock"],
-                nominationCount: 1,
-                info: "Kate Hudson's dramatic turn"
-            },
-            {
-                id: 15,
-                title: "Bugonia",
-                poster: "https://upload.wikimedia.org/wikipedia/en/thumb/2/27/Bugonia_film_poster.jpg/250px-Bugonia_film_poster.jpg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Actress", nominee: "Emma Stone" },
-                    { category: "Best Adapted Screenplay", nominee: "Will Tracy" },
-                    { category: "Best Original Score", nominee: "Jerskin Fendrix" }
-                ],
-                streaming: ["Peacock"],
-                nominationCount: 4,
-                info: "Yorgos Lanthimos & Emma Stone's sci-fi thriller"
-            },
-            // Additional Major Films
-            {
-                id: 16,
-                title: "F1",
-                poster: "https://m.media-amazon.com/images/M/MV5BNGI0MDI4NjEtOWU3ZS00ODQyLWFhYTgtNGYxM2ZkM2Q2YjE3XkEyXkFqcGc@._V1_.jpg",
-                nominations: [
-                    { category: "Best Picture", nominee: "" },
-                    { category: "Best Film Editing", nominee: "Stephen Mirrione" },
-                    { category: "Best Sound", nominee: "Gareth John, Al Nelson, Gwendolyn Yates Whittle, Gary A. Rizzo, Juan Peralta" },
-                    { category: "Best Visual Effects", nominee: "Ryan Tudhope, Nicolas Chevallier, Robert Harrington, Keith Dawson" }
-                ],
-                streaming: ["Apple TV+"],
-                nominationCount: 4,
-                info: "Brad Pitt's high-octane racing drama"
-            },
-            {
-                id: 17,
-                title: "It Was Just an Accident",
-                poster: "https://m.media-amazon.com/images/M/MV5BMWJkZmZlNjUtM2Q1OC00MmNjLWFkOWEtNjRhN2FkM2ZlMjI3XkEyXkFqcGc@._V1_.jpg",
-                nominations: [
-                    { category: "Best Original Screenplay", nominee: "Jafar Panahi" },
-                    { category: "Best International Feature", nominee: "France" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 2,
-                info: "French drama from acclaimed director Jafar Panahi"
-            },
-            {
-                id: 18,
-                title: "Elio",
-                poster: "https://upload.wikimedia.org/wikipedia/en/4/4e/Elio_film_poster.jpg",
-                nominations: [
-                    { category: "Best Animated Feature", nominee: "Madeline Sharafian, Domee Shi, Adrian Molina" }
-                ],
-                streaming: ["Disney+"],
-                nominationCount: 1,
-                info: "Pixar's space adventure"
-            },
-            {
-                id: 19,
-                title: "Arco",
-                poster: "https://upload.wikimedia.org/wikipedia/en/a/ae/Arco_poster.jpg",
-                nominations: [
-                    { category: "Best Animated Feature", nominee: "Ugo Bienvenu, Félix de Givry, Sophie Mas, Natalie Portman" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Animated feature produced by Natalie Portman"
-            },
-            {
-                id: 20,
-                title: "Little Amélie or the Character of Rain",
-                poster: "https://m.media-amazon.com/images/M/MV5BNjMxMDU3ZGEtMzMyMi00OGZiLWFlZTAtMTAyMmYwOWYxZmIxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Animated Feature", nominee: "Maïlys Vallade, Liane-Cho Han, Nidia Santiago, Henri Magalon" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "French animated film"
-            },
-            {
-                id: 21,
-                title: "Avatar: Fire and Ash",
-                poster: "https://m.media-amazon.com/images/M/MV5BZDYxY2I1OGMtN2Y4MS00ZmU1LTgyNDAtODA0MzAyYjI0N2Y2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Costume Design", nominee: "Deborah L. Scott" },
-                    { category: "Best Visual Effects", nominee: "Joe Letteri, Richard Baneham, Eric Saindon, Daniel Barrett" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 2,
-                info: "James Cameron's third Avatar film"
-            },
-            {
-                id: 22,
-                title: "Sirāt",
-                poster: "https://upload.wikimedia.org/wikipedia/en/thumb/9/91/Sirat_2025.jpeg/250px-Sirat_2025.jpeg",
-                nominations: [
-                    { category: "Best International Feature", nominee: "Spain" },
-                    { category: "Best Sound", nominee: "Amanda Villavieja, Laia Casanovas, Yasmina Praderas" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 2,
-                info: "Spanish drama"
-            },
-            {
-                id: 23,
-                title: "The Voice of Hind Rajab",
-                poster: "https://upload.wikimedia.org/wikipedia/en/b/b5/The_Voice_of_Hind_Rajab_film_poster.jpg",
-                nominations: [
-                    { category: "Best International Feature", nominee: "Tunisia" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Tunisian documentary"
-            },
-            {
-                id: 24,
-                title: "Jurassic World Rebirth",
-                poster: "https://m.media-amazon.com/images/I/71TzNV8bTFL._AC_UF894,1000_QL80_.jpg",
-                nominations: [
-                    { category: "Best Visual Effects", nominee: "David Vickery, Stephen Aplin, Charmaine Chan, Neil Corbould" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Latest Jurassic World installment"
-            },
-            {
-                id: 25,
-                title: "The Lost Bus",
-                poster: "https://upload.wikimedia.org/wikipedia/en/8/88/The_Lost_Bus_poster.jpg",
-                nominations: [
-                    { category: "Best Visual Effects", nominee: "Charlie Noble, David Zaretti, Russell Bowen, Brandon K. McLaughlin" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "VFX showcase"
-            },
-            {
-                id: 26,
-                title: "Kokuho",
-                poster: "https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/Kokuho_poster.jpg/250px-Kokuho_poster.jpg",
-                nominations: [
-                    { category: "Best Makeup and Hairstyling", nominee: "Kyoko Toyokawa, Naomi Hibino, Tadashi Nishimatsu" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Japanese period drama"
-            },
-            {
-                id: 27,
-                title: "The Smashing Machine",
-                poster: "https://m.media-amazon.com/images/M/MV5BOWYxZTM1ZGMtMjg5MC00NzcyLTk0ZTEtZWI0ZThkNDJiYjZmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-                nominations: [
-                    { category: "Best Makeup and Hairstyling", nominee: "Kazu Hiro, Glen Griffin, Bjoern Rehbein" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Sports biopic"
-            },
-            {
-                id: 28,
-                title: "The Ugly Stepsister",
-                poster: "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Ugly_Stepsister_film_poster.jpg",
-                nominations: [
-                    { category: "Best Makeup and Hairstyling", nominee: "Thomas Foldberg, Anne Cathrine Sauerberg" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Fairytale reimagining"
-            },
-            {
-                id: 29,
-                title: "Viva Verdi!",
-                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuZmJxR4Qr8gYGzDhcWQi9KuhpDNjzXsn4Ag&s",
-                nominations: [
-                    { category: "Best Original Song", nominee: "'Sweet Dreams Of Joy' - Nicholas Pike" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Opera-inspired musical"
-            },
-            {
-                id: 30,
-                title: "Diane Warren: Relentless",
-                poster: "https://m.media-amazon.com/images/M/MV5BMTQ3YzZhMjctYTM3MC00YjZhLWE1ZjQtOGRlNjM2OTRmZGE3XkEyXkFqcGc@._V1_.jpg",
-                nominations: [
-                    { category: "Best Original Song", nominee: "'Dear Me' - Diane Warren" }
-                ],
-                streaming: ["Theaters"],
-                nominationCount: 1,
-                info: "Documentary about the legendary songwriter"
-            }
-        ];
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3F5SeJ1U-3hRDLn5HwQvbKPdQHfbzjr5sugv2J4TRPoVB6wSVwrZjfcTWRNemCFyz/exec';
 
-        let currentUser = '';
-        let currentUserEmoji = '';
-        let currentFilter = 'all';
-        let currentSubFilter = '';
-        let currentPage = 'watchlist';
-        let userPredictions = {};
+// ── JSONP API ─────────────────────────────────────────────────────────────────
+function api(params) {
+    return new Promise((resolve, reject) => {
+        const cbName = '_cb' + Date.now() + Math.floor(Math.random() * 1000);
+        const timeout = setTimeout(() => {
+            delete window[cbName]; script.remove();
+            reject(new Error('Request timed out'));
+        }, 15000);
+        window[cbName] = (data) => {
+            clearTimeout(timeout); delete window[cbName]; script.remove();
+            if (data.error) reject(new Error(data.error));
+            else resolve(data);
+        };
+        const script = document.createElement('script');
+        script.src = SCRIPT_URL + '?' + new URLSearchParams({ ...params, callback: cbName }).toString();
+        script.onerror = () => { clearTimeout(timeout); delete window[cbName]; reject(new Error('Script load failed')); };
+        document.head.appendChild(script);
+    });
+}
 
-        // Oscar categories with nominees
-        const oscarCategories = [
-            {
-                id: 'best-picture',
-                name: 'Best Picture',
-                nominees: [
-                    'Bugonia',
-                    'F1',
-                    'Frankenstein',
-                    'Hamnet',
-                    'Marty Supreme',
-                    'One Battle after Another',
-                    'The Secret Agent',
-                    'Sentimental Value',
-                    'Sinners',
-                    'Train Dreams'
-                ]
-            },
-            {
-                id: 'best-director',
-                name: 'Best Director',
-                nominees: [
-                    'Chloé Zhao - Hamnet',
-                    'Josh Safdie - Marty Supreme',
-                    'Paul Thomas Anderson - One Battle after Another',
-                    'Joachim Trier - Sentimental Value',
-                    'Ryan Coogler - Sinners'
-                ]
-            },
-            {
-                id: 'best-actor',
-                name: 'Best Actor',
-                nominees: [
-                    'Timothée Chalamet - Marty Supreme',
-                    'Leonardo DiCaprio - One Battle after Another',
-                    'Ethan Hawke - Blue Moon',
-                    'Michael B. Jordan - Sinners',
-                    'Wagner Moura - The Secret Agent'
-                ]
-            },
-            {
-                id: 'best-actress',
-                name: 'Best Actress',
-                nominees: [
-                    'Jessie Buckley - Hamnet',
-                    'Rose Byrne - If I Had Legs I\'d Kick You',
-                    'Kate Hudson - Song Sung Blue',
-                    'Renate Reinsve - Sentimental Value',
-                    'Emma Stone - Bugonia'
-                ]
-            },
-            {
-                id: 'best-supporting-actor',
-                name: 'Best Supporting Actor',
-                nominees: [
-                    'Benicio Del Toro - One Battle after Another',
-                    'Jacob Elordi - Frankenstein',
-                    'Delroy Lindo - Sinners',
-                    'Sean Penn - One Battle after Another',
-                    'Stellan Skarsgård - Sentimental Value'
-                ]
-            },
-            {
-                id: 'best-supporting-actress',
-                name: 'Best Supporting Actress',
-                nominees: [
-                    'Elle Fanning - Sentimental Value',
-                    'Inga Ibsdotter Lilleaas - Sentimental Value',
-                    'Amy Madigan - Weapons',
-                    'Wunmi Mosaku - Sinners',
-                    'Teyana Taylor - One Battle after Another'
-                ]
-            },
-            {
-                id: 'best-original-screenplay',
-                name: 'Best Original Screenplay',
-                nominees: [
-                    'Blue Moon',
-                    'It Was Just an Accident',
-                    'Marty Supreme',
-                    'Sentimental Value',
-                    'Sinners'
-                ]
-            },
-            {
-                id: 'best-adapted-screenplay',
-                name: 'Best Adapted Screenplay',
-                nominees: [
-                    'Bugonia',
-                    'Frankenstein',
-                    'Hamnet',
-                    'One Battle after Another',
-                    'Train Dreams'
-                ]
-            }
-        ];
-        
-        const bonusCategories = [
-            {
-                id: 'best-animated-feature',
-                name: 'Best Animated Feature',
-                nominees: [
-                    'Arco',
-                    'Elio',
-                    'KPop Demon Hunters',
-                    'Little Amélie or the Character of Rain',
-                    'Zootopia 2'
-                ]
-            },
-            {
-                id: 'best-cinematography',
-                name: 'Best Cinematography',
-                nominees: [
-                    'Frankenstein - Dan Laustsen',
-                    'Marty Supreme - Darius Khondji',
-                    'One Battle after Another - Michael Bauman',
-                    'Sinners - Autumn Durald Arkapaw',
-                    'Train Dreams - Adolpho Veloso'
-                ]
-            },
-            {
-                id: 'best-film-editing',
-                name: 'Best Film Editing',
-                nominees: [
-                    'F1',
-                    'Marty Supreme',
-                    'One Battle after Another',
-                    'Sentimental Value',
-                    'Sinners'
-                ]
-            },
-            {
-                id: 'best-visual-effects',
-                name: 'Best Visual Effects',
-                nominees: [
-                    'Avatar: Fire and Ash',
-                    'F1',
-                    'Jurassic World Rebirth',
-                    'The Lost Bus',
-                    'Sinners'
-                ]
-            },
-            {
-                id: 'best-original-score',
-                name: 'Best Original Score',
-                nominees: [
-                    'Bugonia',
-                    'Frankenstein',
-                    'Hamnet',
-                    'One Battle after Another',
-                    'Sinners'
-                ]
-            },
-            {
-                id: 'best-original-song',
-                name: 'Best Original Song',
-                nominees: [
-                    'Dear Me - Diane Warren: Relentless',
-                    'Golden - KPop Demon Hunters',
-                    'I Lied To You - Sinners',
-                    'Sweet Dreams Of Joy - Viva Verdi!',
-                    'Train Dreams - Train Dreams'
-                ]
-            },
-            {
-                id: 'best-makeup-hairstyling',
-                name: 'Best Makeup and Hairstyling',
-                nominees: [
-                    'Frankenstein',
-                    'Kokuho',
-                    'Sinners',
-                    'The Smashing Machine',
-                    'The Ugly Stepsister'
-                ]
-            },
-            {
-                id: 'best-costume-design',
-                name: 'Best Costume Design',
-                nominees: [
-                    'Avatar: Fire and Ash',
-                    'Frankenstein',
-                    'Hamnet',
-                    'Marty Supreme',
-                    'Sinners'
-                ]
-            },
-            {
-                id: 'best-production-design',
-                name: 'Best Production Design',
-                nominees: [
-                    'Frankenstein',
-                    'Hamnet',
-                    'Marty Supreme',
-                    'One Battle after Another',
-                    'Sinners'
-                ]
-            },
-            {
-                id: 'best-sound',
-                name: 'Best Sound',
-                nominees: [
-                    'F1',
-                    'Frankenstein',
-                    'One Battle after Another',
-                    'Sinners',
-                    'Sirāt'
-                ]
-            },
-            {
-                id: 'best-international-feature',
-                name: 'Best International Feature',
-                nominees: [
-                    'The Secret Agent (Brazil)',
-                    'It Was Just an Accident (France)',
-                    'Sentimental Value (Norway)',
-                    'Sirāt (Spain)',
-                    'The Voice of Hind Rajab (Tunisia)'
-                ]
-            }
-        ];
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type='saving') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `toast toast-${type} show`;
+    clearTimeout(toastTimer);
+    if (type !== 'saving') toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+function hideToast() { document.getElementById('toast').classList.remove('show'); }
 
-        function selectEmoji(emoji, event) {
-            currentUserEmoji = emoji;
-            
-            // Update button styles - add a visual indicator below the emoji instead
-            document.querySelectorAll('.emoji-option').forEach(btn => {
-                btn.style.borderBottom = 'none';
-            });
-            
-            // Highlight selected emoji with bottom border
-            if (event && event.currentTarget) {
-                event.currentTarget.style.borderBottom = '3px solid #d4af37';
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const movies = [
+    {id:1,title:"Marty Supreme",poster:"https://m.media-amazon.com/images/M/MV5BZTRhYjI1MTItMWYwMi00MjY5LWI1OTktMzQwNzA3MWJlN2QyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Josh Safdie"},{category:"Best Actor",nominee:"Timothée Chalamet"},{category:"Best Original Screenplay",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Cinematography",nominee:"Darius Khondji"},{category:"Best Film Editing",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Production Design",nominee:"Jack Fisk"},{category:"Best Casting",nominee:"Jennifer Venditti"}],streaming:["Theaters"],nominationCount:8,info:"Josh Safdie's ping pong drama with Timothée Chalamet"},
+    {id:2,title:"Hamnet",poster:"https://upload.wikimedia.org/wikipedia/en/1/1f/Hamnet_film_poster.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Chloé Zhao"},{category:"Best Actress",nominee:"Jessie Buckley"},{category:"Best Adapted Screenplay",nominee:"Chloé Zhao & Maggie O'Farrell"},{category:"Best Original Score",nominee:"Max Richter"},{category:"Best Costume Design",nominee:"Malgosia Turzanska"},{category:"Best Production Design",nominee:"Fiona Crombie"},{category:"Best Casting",nominee:"Nina Gold"}],streaming:["Theaters"],nominationCount:8,info:"Chloé Zhao's Shakespearean drama"},
+    {id:3,title:"Zootopia 2",poster:"https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Animated Feature",nominee:"Jared Bush, Byron Howard"}],streaming:["Theaters"],nominationCount:1,info:"The sequel to Disney's beloved animated hit"},
+    {id:4,title:"The Secret Agent",poster:"https://resizing.flixster.com/YBTbc6VIpar20XFi7a0tCAPmcd8=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzcwNWE0M2ZkLTBiMGEtNDNmNC1iMGY1LTU1ZmNlNjdjYzNiZC5qcGc=",nominations:[{category:"Best Picture",nominee:""},{category:"Best Actor",nominee:"Wagner Moura"},{category:"Best International Feature",nominee:"Brazil"},{category:"Best Casting",nominee:"Gabriel Domingues"}],streaming:["Theaters"],nominationCount:4,info:"Brazilian drama with Wagner Moura"},
+    {id:5,title:"Sentimental Value",poster:"https://miro.medium.com/1*XBRV5ALCoSNp3r4yK4MsJg.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Joachim Trier"},{category:"Best Actress",nominee:"Renate Reinsve"},{category:"Best Supporting Actor",nominee:"Stellan Skarsgård"},{category:"Best Supporting Actress",nominee:"Elle Fanning & Inga Ibsdotter Lilleaas"},{category:"Best Original Screenplay",nominee:"Eskil Vogt & Joachim Trier"},{category:"Best Film Editing",nominee:"Olivier Bugge Coutté"}],streaming:["Theaters"],nominationCount:8,info:"Joachim Trier's Norwegian drama"},
+    {id:6,title:"Frankenstein",poster:"https://upload.wikimedia.org/wikipedia/en/9/94/Frankenstein_2025_film_poster.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Supporting Actor",nominee:"Jacob Elordi"},{category:"Best Adapted Screenplay",nominee:"Guillermo del Toro"},{category:"Best Original Score",nominee:"Alexandre Desplat"},{category:"Best Cinematography",nominee:"Dan Laustsen"},{category:"Best Makeup and Hairstyling",nominee:"Mike Hill, Jordan Samuel, Cliona Furey"},{category:"Best Costume Design",nominee:"Kate Hawley"},{category:"Best Production Design",nominee:"Tamara Deverell"},{category:"Best Sound",nominee:"Greg Chapman, Nathan Robitaille, Nelson Ferreira, Christian Cooke, Brad Zoern"}],streaming:["Netflix"],nominationCount:9,info:"Guillermo del Toro's passion project"},
+    {id:7,title:"KPop Demon Hunters",poster:"https://m.media-amazon.com/images/M/MV5BNTBiYWJlMjQtOTIyMy00NTY4LWFhOWItOWZhNzc3NGMyMjc2XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Animated Feature",nominee:"Maggie Kang, Chris Appelhans"},{category:"Best Original Song",nominee:"'Golden' - EJAE, Mark Sonnenblick"}],streaming:["Netflix"],nominationCount:2,info:"Animated adventure with original song 'Golden'"},
+    {id:8,title:"Blue Moon",poster:"https://m.media-amazon.com/images/S/pv-target-images/164bb79469d2e6a5af0ac7bd4f8a2a164392526a7e16e201eea3566f466c334f.jpg",nominations:[{category:"Best Actor",nominee:"Ethan Hawke"},{category:"Best Original Screenplay",nominee:"Robert Kaplow"}],streaming:["Netflix"],nominationCount:2,info:"Starring Ethan Hawke in an intimate character study"},
+    {id:9,title:"Train Dreams",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/5/58/Train_Dreams_poster.jpeg/250px-Train_Dreams_poster.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Adapted Screenplay",nominee:"Clint Bentley & Greg Kwedar"},{category:"Best Original Song",nominee:"'Train Dreams' - Nick Cave"},{category:"Best Cinematography",nominee:"Adolpho Veloso"}],streaming:["Netflix"],nominationCount:4,info:"Based on Denis Johnson's novella with Nick Cave song"},
+    {id:10,title:"One Battle after Another",poster:"https://batman-on-film.com/wp-content/uploads/2025/09/onebattleafteranother_poster.webp",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Paul Thomas Anderson"},{category:"Best Actor",nominee:"Leonardo DiCaprio"},{category:"Best Supporting Actor",nominee:"Benicio Del Toro & Sean Penn"},{category:"Best Supporting Actress",nominee:"Teyana Taylor"},{category:"Best Adapted Screenplay",nominee:"Paul Thomas Anderson"},{category:"Best Original Score",nominee:"Jonny Greenwood"},{category:"Best Cinematography",nominee:"Michael Bauman"},{category:"Best Film Editing",nominee:"Andy Jurgensen"},{category:"Best Production Design",nominee:"Florencia Martin"},{category:"Best Sound",nominee:"José Antonio García, Christopher Scarabosio, Tony Villaflor"},{category:"Best Casting",nominee:"Cassandra Kulukundis"}],streaming:["HBO Max"],nominationCount:12,info:"Paul Thomas Anderson's revolutionary saga"},
+    {id:11,title:"Sinners",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Sinners_%282025_film%29_poster.jpg/250px-Sinners_%282025_film%29_poster.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Ryan Coogler"},{category:"Best Actor",nominee:"Michael B. Jordan"},{category:"Best Supporting Actor",nominee:"Delroy Lindo"},{category:"Best Supporting Actress",nominee:"Wunmi Mosaku"},{category:"Best Original Screenplay",nominee:"Ryan Coogler"},{category:"Best Original Score",nominee:"Ludwig Göransson"},{category:"Best Cinematography",nominee:"Autumn Durald Arkapaw"},{category:"Best Visual Effects",nominee:"Michael Ralla, Espen Nordahl, Guido Wolter, Donnie Dean"},{category:"Best Film Editing",nominee:"Michael P. Shawver"},{category:"Best Makeup and Hairstyling",nominee:"Ken Diaz, Mike Fontaine, Shunika Terry"},{category:"Best Costume Design",nominee:"Ruth E. Carter"},{category:"Best Production Design",nominee:"Hannah Beachler"},{category:"Best Sound",nominee:"Chris Welcker, Benjamin A. Burtt, Felipe Pacheco, Brandon Proctor, Steve Boeddeker"},{category:"Best Casting",nominee:"Francine Maisler"},{category:"Best Original Song",nominee:"'I Lied To You' - Raphael Saadiq & Ludwig Göransson"}],streaming:["HBO Max"],nominationCount:16,info:"Ryan Coogler's vampire epic — record-breaking 16 nominations!"},
+    {id:12,title:"If I Had Legs I'd Kick You",poster:"https://m.media-amazon.com/images/M/MV5BMGRlMjIzMDctNzNkMS00MzEwLTlhZWEtM2FjYmE1ZmFjMzZlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Actress",nominee:"Rose Byrne"}],streaming:["HBO Max"],nominationCount:1,info:"Rose Byrne's powerful performance"},
+    {id:13,title:"Weapons",poster:"https://m.media-amazon.com/images/M/MV5BNTBhNWJjZWItYzY3NS00M2NkLThmOWYtYTlmNzBmN2UxZWFjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Supporting Actress",nominee:"Amy Madigan"}],streaming:["HBO Max"],nominationCount:1,info:"Thriller featuring Amy Madigan"},
+    {id:14,title:"Song Sung Blue",poster:"https://resizing.flixster.com/q35fmE6JW4sTFAO0sbhJdpfzj9c=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzcwNWE0M2ZkLTBiMGEtNDNmNC1iMGY1LTU1ZmNlNjdjYzNiZC5qcGc=",nominations:[{category:"Best Actress",nominee:"Kate Hudson"}],streaming:["Peacock"],nominationCount:1,info:"Kate Hudson's dramatic turn"},
+    {id:15,title:"Bugonia",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/2/27/Bugonia_film_poster.jpg/250px-Bugonia_film_poster.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Actress",nominee:"Emma Stone"},{category:"Best Adapted Screenplay",nominee:"Will Tracy"},{category:"Best Original Score",nominee:"Jerskin Fendrix"}],streaming:["Peacock"],nominationCount:4,info:"Yorgos Lanthimos & Emma Stone's sci-fi thriller"},
+    {id:16,title:"F1",poster:"https://m.media-amazon.com/images/M/MV5BNGI0MDI4NjEtOWU3ZS00ODQyLWFhYTgtNGYxM2ZkM2Q2YjE3XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Film Editing",nominee:"Stephen Mirrione"},{category:"Best Sound",nominee:"Gareth John, Al Nelson, Gwendolyn Yates Whittle, Gary A. Rizzo, Juan Peralta"},{category:"Best Visual Effects",nominee:"Ryan Tudhope, Nicolas Chevallier, Robert Harrington, Keith Dawson"}],streaming:["Apple TV+"],nominationCount:4,info:"Brad Pitt's high-octane racing drama"},
+    {id:17,title:"It Was Just an Accident",poster:"https://m.media-amazon.com/images/M/MV5BMWJkZmZlNjUtM2Q1OC00MmNjLWFkOWEtNjRhN2FkM2ZlMjI3XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Original Screenplay",nominee:"Jafar Panahi"},{category:"Best International Feature",nominee:"France"}],streaming:["Theaters"],nominationCount:2,info:"French drama from acclaimed director Jafar Panahi"},
+    {id:18,title:"Elio",poster:"https://upload.wikimedia.org/wikipedia/en/4/4e/Elio_film_poster.jpg",nominations:[{category:"Best Animated Feature",nominee:"Madeline Sharafian, Domee Shi, Adrian Molina"}],streaming:["Disney+"],nominationCount:1,info:"Pixar's space adventure"},
+    {id:19,title:"Arco",poster:"https://upload.wikimedia.org/wikipedia/en/a/ae/Arco_poster.jpg",nominations:[{category:"Best Animated Feature",nominee:"Ugo Bienvenu, Félix de Givry, Sophie Mas, Natalie Portman"}],streaming:["Theaters"],nominationCount:1,info:"Animated feature produced by Natalie Portman"},
+    {id:20,title:"Little Amélie or the Character of Rain",poster:"https://m.media-amazon.com/images/M/MV5BNjMxMDU3ZGEtMzMyMi00OGZiLWFlZTAtMTAyMmYwOWYxZmIxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Animated Feature",nominee:"Maïlys Vallade, Liane-Cho Han, Nidia Santiago, Henri Magalon"}],streaming:["Theaters"],nominationCount:1,info:"French animated film"},
+    {id:21,title:"Avatar: Fire and Ash",poster:"https://m.media-amazon.com/images/M/MV5BZDYxY2I1OGMtN2Y4MS00ZmU1LTgyNDAtODA0MzAyYjI0N2Y2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Costume Design",nominee:"Deborah L. Scott"},{category:"Best Visual Effects",nominee:"Joe Letteri, Richard Baneham, Eric Saindon, Daniel Barrett"}],streaming:["Theaters"],nominationCount:2,info:"James Cameron's third Avatar film"},
+    {id:22,title:"Sirāt",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/9/91/Sirat_2025.jpeg/250px-Sirat_2025.jpeg",nominations:[{category:"Best International Feature",nominee:"Spain"},{category:"Best Sound",nominee:"Amanda Villavieja, Laia Casanovas, Yasmina Praderas"}],streaming:["Theaters"],nominationCount:2,info:"Spanish drama"},
+    {id:23,title:"The Voice of Hind Rajab",poster:"https://upload.wikimedia.org/wikipedia/en/b/b5/The_Voice_of_Hind_Rajab_film_poster.jpg",nominations:[{category:"Best International Feature",nominee:"Tunisia"}],streaming:["Theaters"],nominationCount:1,info:"Tunisian documentary"},
+    {id:24,title:"Jurassic World Rebirth",poster:"https://m.media-amazon.com/images/I/71TzNV8bTFL._AC_UF894,1000_QL80_.jpg",nominations:[{category:"Best Visual Effects",nominee:"David Vickery, Stephen Aplin, Charmaine Chan, Neil Corbould"}],streaming:["Theaters"],nominationCount:1,info:"Latest Jurassic World installment"},
+    {id:25,title:"The Lost Bus",poster:"https://upload.wikimedia.org/wikipedia/en/8/88/The_Lost_Bus_poster.jpg",nominations:[{category:"Best Visual Effects",nominee:"Charlie Noble, David Zaretti, Russell Bowen, Brandon K. McLaughlin"}],streaming:["Theaters"],nominationCount:1,info:"VFX showcase"},
+    {id:26,title:"Kokuho",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/2/2e/Kokuho_poster.jpg/250px-Kokuho_poster.jpg",nominations:[{category:"Best Makeup and Hairstyling",nominee:"Kyoko Toyokawa, Naomi Hibino, Tadashi Nishimatsu"}],streaming:["Theaters"],nominationCount:1,info:"Japanese period drama"},
+    {id:27,title:"The Smashing Machine",poster:"https://m.media-amazon.com/images/M/MV5BOWYxZTM1ZGMtMjg5MC00NzcyLTk0ZTEtZWI0ZThkNDJiYjZmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Makeup and Hairstyling",nominee:"Kazu Hiro, Glen Griffin, Bjoern Rehbein"}],streaming:["Theaters"],nominationCount:1,info:"Sports biopic"},
+    {id:28,title:"The Ugly Stepsister",poster:"https://upload.wikimedia.org/wikipedia/en/c/c1/The_Ugly_Stepsister_film_poster.jpg",nominations:[{category:"Best Makeup and Hairstyling",nominee:"Thomas Foldberg, Anne Cathrine Sauerberg"}],streaming:["Theaters"],nominationCount:1,info:"Fairytale reimagining"},
+    {id:29,title:"Viva Verdi!",poster:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuZmJxR4Qr8gYGzDhcWQi9KuhpDNjzXsn4Ag&s",nominations:[{category:"Best Original Song",nominee:"'Sweet Dreams Of Joy' - Nicholas Pike"}],streaming:["Theaters"],nominationCount:1,info:"Opera-inspired musical"},
+    {id:30,title:"Diane Warren: Relentless",poster:"https://m.media-amazon.com/images/M/MV5BMTQ3YzZhMjctYTM3MC00YjZhLWE1ZjQtOGRlNjM2OTRmZGE3XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Original Song",nominee:"'Dear Me' - Diane Warren"}],streaming:["Theaters"],nominationCount:1,info:"Documentary about the legendary songwriter"}
+];
+
+const oscarCategories = [
+    {id:'best-picture',name:'Best Picture',nominees:['Bugonia','F1','Frankenstein','Hamnet','Marty Supreme','One Battle after Another','The Secret Agent','Sentimental Value','Sinners','Train Dreams']},
+    {id:'best-director',name:'Best Director',nominees:['Chloé Zhao - Hamnet','Josh Safdie - Marty Supreme','Paul Thomas Anderson - One Battle after Another','Joachim Trier - Sentimental Value','Ryan Coogler - Sinners']},
+    {id:'best-actor',name:'Best Actor',nominees:['Timothée Chalamet - Marty Supreme','Leonardo DiCaprio - One Battle after Another','Ethan Hawke - Blue Moon','Michael B. Jordan - Sinners','Wagner Moura - The Secret Agent']},
+    {id:'best-actress',name:'Best Actress',nominees:["Jessie Buckley - Hamnet","Rose Byrne - If I Had Legs I'd Kick You","Kate Hudson - Song Sung Blue","Renate Reinsve - Sentimental Value","Emma Stone - Bugonia"]},
+    {id:'best-supporting-actor',name:'Best Supporting Actor',nominees:['Benicio Del Toro - One Battle after Another','Jacob Elordi - Frankenstein','Delroy Lindo - Sinners','Sean Penn - One Battle after Another','Stellan Skarsgård - Sentimental Value']},
+    {id:'best-supporting-actress',name:'Best Supporting Actress',nominees:['Elle Fanning - Sentimental Value','Inga Ibsdotter Lilleaas - Sentimental Value','Amy Madigan - Weapons','Wunmi Mosaku - Sinners','Teyana Taylor - One Battle after Another']},
+    {id:'best-original-screenplay',name:'Best Original Screenplay',nominees:['Blue Moon','It Was Just an Accident','Marty Supreme','Sentimental Value','Sinners']},
+    {id:'best-adapted-screenplay',name:'Best Adapted Screenplay',nominees:['Bugonia','Frankenstein','Hamnet','One Battle after Another','Train Dreams']}
+];
+const bonusCategories = [
+    {id:'best-animated-feature',name:'Best Animated Feature',nominees:['Arco','Elio','KPop Demon Hunters','Little Amélie or the Character of Rain','Zootopia 2']},
+    {id:'best-cinematography',name:'Best Cinematography',nominees:['Frankenstein - Dan Laustsen','Marty Supreme - Darius Khondji','One Battle after Another - Michael Bauman','Sinners - Autumn Durald Arkapaw','Train Dreams - Adolpho Veloso']},
+    {id:'best-film-editing',name:'Best Film Editing',nominees:['F1','Marty Supreme','One Battle after Another','Sentimental Value','Sinners']},
+    {id:'best-visual-effects',name:'Best Visual Effects',nominees:['Avatar: Fire and Ash','F1','Jurassic World Rebirth','The Lost Bus','Sinners']},
+    {id:'best-original-score',name:'Best Original Score',nominees:['Bugonia','Frankenstein','Hamnet','One Battle after Another','Sinners']},
+    {id:'best-original-song',name:'Best Original Song',nominees:['Dear Me - Diane Warren: Relentless','Golden - KPop Demon Hunters','I Lied To You - Sinners','Sweet Dreams Of Joy - Viva Verdi!','Train Dreams - Train Dreams']},
+    {id:'best-makeup-hairstyling',name:'Best Makeup and Hairstyling',nominees:['Frankenstein','Kokuho','Sinners','The Smashing Machine','The Ugly Stepsister']},
+    {id:'best-costume-design',name:'Best Costume Design',nominees:['Avatar: Fire and Ash','Frankenstein','Hamnet','Marty Supreme','Sinners']},
+    {id:'best-production-design',name:'Best Production Design',nominees:['Frankenstein','Hamnet','Marty Supreme','One Battle after Another','Sinners']},
+    {id:'best-sound',name:'Best Sound',nominees:['F1','Frankenstein','One Battle after Another','Sinners','Sirāt']},
+    {id:'best-international-feature',name:'Best International Feature',nominees:['The Secret Agent (Brazil)','It Was Just an Accident (France)','Sentimental Value (Norway)','Sirāt (Spain)','The Voice of Hind Rajab (Tunisia)']}
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let currentUser = '', currentUserEmoji = '';
+let currentFilter = 'all', currentSubFilter = '', currentPage = 'watchlist';
+let userPredictions = {};
+let allUsersData = [], allPredsData = [];
+window.userWatched = new Set();
+
+// ── LAZY POSTER OBSERVER ──────────────────────────────────────────────────────
+let posterObserver;
+function initLazyPosters() {
+    if (posterObserver) posterObserver.disconnect();
+    posterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const img = e.target;
+                img.src = img.dataset.src;
+                img.classList.remove('poster-placeholder');
+                posterObserver.unobserve(img);
             }
+        });
+    }, { rootMargin: '300px' }); // start loading 300px before they scroll into view
+    document.querySelectorAll('img.lazy-poster[data-src]').forEach(img => posterObserver.observe(img));
+}
+
+// ── EMOJI ─────────────────────────────────────────────────────────────────────
+function selectEmoji(emoji, btn) {
+    currentUserEmoji = emoji;
+    document.querySelectorAll('.emoji-option').forEach(b => b.style.borderBottom = 'none');
+    btn.style.borderBottom = '3px solid #d4af37';
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function init() {
+    const n = localStorage.getItem('oscarsUserName');
+    const e = localStorage.getItem('oscarsUserEmoji');
+    if (n && e) {
+        currentUser = n; currentUserEmoji = e;
+        showMainContent();
+    }
+}
+
+function showMainContent() {
+    document.getElementById('nameEntry').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+    document.getElementById('pageTabs').classList.remove('hidden');
+    document.getElementById('pageTabs').style.display = 'flex';
+    // Render movies immediately with no sheet data (instant UI)
+    renderMovies();
+    updateStats();
+    // Then load sheet data in the background
+    loadAll();
+}
+
+async function setUserName() {
+    const name = document.getElementById('userName').value.trim();
+    if (!name) { alert('Please enter your name!'); return; }
+    if (!currentUserEmoji) { alert('Please pick an emoji!'); return; }
+    currentUser = name;
+    localStorage.setItem('oscarsUserName', name);
+    localStorage.setItem('oscarsUserEmoji', currentUserEmoji);
+    showMainContent();
+}
+
+// ── LOAD SHEET DATA ───────────────────────────────────────────────────────────
+async function loadAll() {
+    try {
+        showToast('Syncing with sheet…', 'saving');
+        const data = await api({ action: 'getAll' });
+        allUsersData = data.users || [];
+        allPredsData = data.predictions || [];
+
+        const myRow = allUsersData.find(r => r.name === currentUser);
+        if (myRow && myRow.watched) {
+            window.userWatched = new Set(myRow.watched.toString().split(',').map(Number).filter(Boolean));
         }
 
-        // Initialize app
-        async function init() {
-            const storedName = localStorage.getItem('oscarsUserName');
-            const storedEmoji = localStorage.getItem('oscarsUserEmoji');
-            if (storedName && storedEmoji) {
-                currentUser = storedName;
-                currentUserEmoji = storedEmoji;
-                document.getElementById('nameEntry').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-                await loadData();
-            }
+        userPredictions = {};
+        allPredsData.filter(r => r.name === currentUser).forEach(r => {
+            userPredictions[r.category] = r.nominee;
+        });
+
+        if (!myRow) {
+            // Fire-and-forget — don't block render on this
+            api({ action: 'saveUser', name: currentUser, emoji: currentUserEmoji, watched: '' });
         }
 
-        function setUserName() {
-            const name = document.getElementById('userName').value.trim();
-            if (!name) {
-                alert('Please enter your name!');
-                return;
-            }
-            if (!currentUserEmoji) {
-                alert('Please pick an emoji!');
-                return;
-            }
-            currentUser = name;
-            localStorage.setItem('oscarsUserName', name);
-            localStorage.setItem('oscarsUserEmoji', currentUserEmoji);
-            document.getElementById('nameEntry').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-            loadData();
-        }
+        hideToast();
+    } catch (err) {
+        showToast('Sheet sync failed — changes may not save', 'err');
+    } finally {
+        // Re-render with up-to-date watched state from sheet
+        renderMovies();
+        updateStats();
+    }
+}
 
-        async function loadData() {
-            try {
-                // Load user's watched movies
-                const userKey = `watched:${currentUser}`;
-                try {
-                    const result = await window.storage.get(userKey);
-                    if (result && result.value) {
-                        const watched = JSON.parse(result.value);
-                        // Store in memory
-                        window.userWatched = new Set(watched);
-                    } else {
-                        window.userWatched = new Set();
-                    }
-                } catch (err) {
-                    window.userWatched = new Set();
-                }
+// ── TOGGLE WATCHED ────────────────────────────────────────────────────────────
+async function toggleMovie(movieId) {
+    const id = Number(movieId);
+    if (window.userWatched.has(id)) window.userWatched.delete(id);
+    else window.userWatched.add(id);
 
-                // Load all users
-                try {
-                    const usersResult = await window.storage.get('all-users', true);
-                    if (usersResult && usersResult.value) {
-                        window.allUsers = JSON.parse(usersResult.value);
-                    } else {
-                        window.allUsers = {};
-                    }
-                } catch (err) {
-                    window.allUsers = {};
-                }
+    renderMovies();
+    updateStats();
 
-                // Add current user if not already in list or update emoji
-                if (!window.allUsers[currentUser]) {
-                    window.allUsers[currentUser] = { watched: [], emoji: currentUserEmoji };
-                } else {
-                    // Update emoji if changed
-                    window.allUsers[currentUser].emoji = currentUserEmoji;
-                }
-                await saveAllUsers();
+    try {
+        showToast('Saving…', 'saving');
+        const watchedStr = [...window.userWatched].join(',');
+        await api({ action: 'saveUser', name: currentUser, emoji: currentUserEmoji, watched: watchedStr });
+        const myRow = allUsersData.find(r => r.name === currentUser);
+        if (myRow) myRow.watched = watchedStr;
+        else allUsersData.push({ name: currentUser, emoji: currentUserEmoji, watched: watchedStr });
+        hideToast();
+    } catch (err) {
+        showToast('Save failed: ' + err.message, 'err');
+    }
+}
 
-                renderMovies();
-                updateStats();
-                await loadPredictions();
-            } catch (err) {
-                console.error('Error loading data:', err);
-                window.userWatched = new Set();
-                window.allUsers = {};
-                renderMovies();
-            }
-        }
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+function setFilter(type, btn) {
+    currentFilter = type; currentSubFilter = '';
+    document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
+        b.classList.add('bg-gray-100','text-gray-800','border-gray-300');
+    });
+    btn.classList.remove('bg-gray-100','text-gray-800','border-gray-300');
+    btn.classList.add('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
 
-        async function saveAllUsers() {
-            try {
-                await window.storage.set('all-users', JSON.stringify(window.allUsers), true);
-            } catch (err) {
-                console.error('Error saving users:', err);
-            }
-        }
+    const sub = document.getElementById('subFilters');
+    sub.innerHTML = ''; sub.classList.remove('open');
 
-        async function toggleMovie(movieId) {
-            const userKey = `watched:${currentUser}`;
-            
-            if (window.userWatched.has(movieId)) {
-                window.userWatched.delete(movieId);
-            } else {
-                window.userWatched.add(movieId);
-            }
+    if (type === 'streaming') {
+        const platforms = [...new Set(movies.flatMap(m => m.streaming))].sort();
+        sub.innerHTML = platforms.map(p =>
+            `<button onclick="setSubFilter('${p}',this)" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${p}</button>`
+        ).join('');
+        sub.classList.add('open');
+    } else if (type === 'category') {
+        const cats = [...new Set(movies.flatMap(m => m.nominations.map(n => n.category)))].sort();
+        sub.innerHTML = cats.map(c =>
+            `<button onclick="setSubFilter(${JSON.stringify(c)},this)" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${c}</button>`
+        ).join('');
+        sub.classList.add('open');
+    }
+    renderMovies();
+}
 
-            // Save user's watched list
-            try {
-                await window.storage.set(userKey, JSON.stringify([...window.userWatched]));
-            } catch (err) {
-                console.error('Error saving:', err);
-            }
+function setSubFilter(filter, btn) {
+    currentSubFilter = filter;
+    document.querySelectorAll('.sub-filter-btn').forEach(b => {
+        b.classList.remove('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
+        b.classList.add('bg-white','text-gray-700','border-gray-300');
+    });
+    btn.classList.remove('bg-white','text-gray-700','border-gray-300');
+    btn.classList.add('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
+    renderMovies();
+}
 
-            // Update all users list with emoji preserved
-            window.allUsers[currentUser] = { 
-                watched: [...window.userWatched],
-                emoji: currentUserEmoji 
-            };
-            await saveAllUsers();
+// ── RENDER MOVIES ─────────────────────────────────────────────────────────────
+function renderMovies() { filterMovies(); }
 
-            renderMovies();
-            updateStats();
-        }
+function filterMovies() {
+    const grid = document.getElementById('moviesGrid');
+    const search = (document.getElementById('movieSearch')?.value || '').toLowerCase();
+    const platformUrls = {
+        'Netflix':'https://www.netflix.com/search?q=','HBO Max':'https://www.max.com/search?q=',
+        'Peacock':'https://www.peacocktv.com/search?q=','Theaters':'https://www.fandango.com/search?q=',
+        'Prime Video':'https://www.amazon.com/s?k=','Apple TV+':'https://tv.apple.com/search?q=',
+        'Hulu':'https://www.hulu.com/search?q=','Disney+':'https://www.disneyplus.com/search?q=',
+        'Paramount+':'https://www.paramountplus.com/search/?query='
+    };
 
-        function setFilter(type) {
-            currentFilter = type;
-            currentSubFilter = '';
-            
-            // Update button styles
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('gold-gradient', 'text-gray-900', 'shadow-md', 'border-yellow-600');
-                btn.classList.add('bg-gray-100', 'text-gray-800', 'border-gray-300');
-            });
-            event.target.classList.remove('bg-gray-100', 'text-gray-800', 'border-gray-300');
-            event.target.classList.add('gold-gradient', 'text-gray-900', 'shadow-md', 'border-yellow-600');
+    let list = movies.filter(m => {
+        if (search && !m.title.toLowerCase().includes(search)) return false;
+        if (currentFilter==='streaming' && currentSubFilter && !m.streaming.includes(currentSubFilter)) return false;
+        if (currentFilter==='category' && currentSubFilter && !m.nominations.some(n=>n.category===currentSubFilter)) return false;
+        return true;
+    }).sort((a,b) => b.nominationCount - a.nominationCount);
 
-            // Show/hide sub-filters
-            const subFiltersDiv = document.getElementById('subFilters');
-            if (type === 'streaming') {
-                const platforms = [...new Set(movies.flatMap(m => m.streaming))].sort();
-                subFiltersDiv.innerHTML = platforms.map(p => 
-                    `<button onclick="setSubFilter('${p}')" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${p}</button>`
-                ).join('');
-                subFiltersDiv.classList.remove('hidden');
-            } else if (type === 'category') {
-                const categories = [...new Set(movies.flatMap(m => m.nominations.map(n => n.category)))].sort();
-                subFiltersDiv.innerHTML = categories.map(c => 
-                    `<button onclick="setSubFilter('${c}')" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${c}</button>`
-                ).join('');
-                subFiltersDiv.classList.remove('hidden');
-            } else {
-                subFiltersDiv.classList.add('hidden');
-            }
+    grid.innerHTML = list.map(movie => {
+        const w = window.userWatched.has(movie.id);
+        const watchedBy = allUsersData.filter(u => {
+            if (!u.watched) return false;
+            return u.watched.toString().split(',').map(Number).includes(movie.id);
+        }).length;
 
-            renderMovies();
-        }
-
-        function setSubFilter(filter) {
-            currentSubFilter = filter;
-            
-            // Update sub-filter button styles
-            document.querySelectorAll('.sub-filter-btn').forEach(btn => {
-                if (btn.textContent === filter) {
-                    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
-                    btn.classList.add('gold-gradient', 'text-gray-900', 'shadow-md', 'border-yellow-600');
-                } else {
-                    btn.classList.remove('gold-gradient', 'text-gray-900', 'shadow-md', 'border-yellow-600');
-                    btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
-                }
-            });
-
-            renderMovies();
-        }
-
-        function renderMovies() {
-            filterMovies();
-        }
-        
-        function filterMovies() {
-            const grid = document.getElementById('moviesGrid');
-            const searchInput = document.getElementById('movieSearch');
-            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-            
-            let filteredMovies = [...movies];
-
-            // Apply search filter
-            if (searchTerm) {
-                filteredMovies = filteredMovies.filter(m => 
-                    m.title.toLowerCase().includes(searchTerm)
-                );
-            }
-
-            // Apply category/platform filters
-            if (currentFilter === 'streaming' && currentSubFilter) {
-                filteredMovies = filteredMovies.filter(m => m.streaming.includes(currentSubFilter));
-            } else if (currentFilter === 'category' && currentSubFilter) {
-                filteredMovies = filteredMovies.filter(m => m.nominations.some(nom => nom.category === currentSubFilter));
-            }
-            
-            // Sort by nomination count (highest first)
-            filteredMovies.sort((a, b) => b.nominationCount - a.nominationCount);
-
-            grid.innerHTML = filteredMovies.map(movie => {
-                const isWatched = window.userWatched && window.userWatched.has(movie.id);
-                const watchedByCount = Object.values(window.allUsers || {}).filter(u => 
-                    u.watched && u.watched.includes(movie.id)
-                ).length;
-                
-                // Platform search URLs
-                const platformUrls = {
-                    'Netflix': `https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`,
-                    'HBO Max': `https://www.max.com/search?q=${encodeURIComponent(movie.title)}`,
-                    'Peacock': `https://www.peacocktv.com/search?q=${encodeURIComponent(movie.title)}`,
-                    'Theaters': `https://www.fandango.com/search?q=${encodeURIComponent(movie.title + ' showtimes')}`,
-                    'Prime Video': `https://www.amazon.com/s?k=${encodeURIComponent(movie.title)}&i=instant-video`,
-                    'Apple TV+': `https://tv.apple.com/search?q=${encodeURIComponent(movie.title)}`,
-                    'Hulu': `https://www.hulu.com/search?q=${encodeURIComponent(movie.title)}`,
-                    'Disney+': `https://www.disneyplus.com/search?q=${encodeURIComponent(movie.title)}`,
-                    'Paramount+': `https://www.paramountplus.com/search/?query=${encodeURIComponent(movie.title)}`
-                };
-                
-                return `
-                    <div class="movie-card ${isWatched ? 'checked-card' : ''} rounded-sm shadow-lg overflow-hidden fade-in">
-                        <img src="${movie.poster}" alt="${movie.title}" class="w-full h-auto object-contain" onerror="this.style.display='none'" style="max-height: 450px;">
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-4">
-                                <h3 class="text-2xl font-bold ${isWatched ? 'text-yellow-100' : 'text-gray-900'} flex-1 leading-tight">${movie.title}</h3>
-                                <div class="ml-3 flex gap-2 items-center">
-                                    <button 
-                                        onclick="toggleMovie(${movie.id})"
-                                        class="flex-shrink-0 ${isWatched ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition-all"
-                                        title="${isWatched ? 'Watched' : 'Mark as watched'}"
-                                    >
-                                        <svg class="w-8 h-8" fill="${isWatched ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <p class="text-sm ${isWatched ? 'text-yellow-100' : 'text-gray-600'} mb-4 leading-relaxed">${movie.info}</p>
-                            
-                            <div class="mb-4 pb-4 border-b ${isWatched ? 'border-red-800' : 'border-gray-200'}">
-                                <button 
-                                    onclick="toggleNominations(${movie.id})"
-                                    class="w-full text-left text-xs font-bold ${isWatched ? 'text-yellow-300' : 'text-yellow-700'} mb-2 uppercase tracking-wider hover:opacity-80 transition-opacity cursor-pointer flex items-center justify-between"
-                                >
-                                    <span>🏆 ${movie.nominationCount} Nomination${movie.nominationCount !== 1 ? 's' : ''}</span>
-                                    <span class="nominations-arrow-${movie.id} transition-transform">▼</span>
-                                </button>
-                                <div id="nominations-${movie.id}" class="hidden flex-wrap gap-2">
-                                    ${movie.nominations.map(nom => 
-                                        `<span 
-                                            data-nominee="${nom.nominee ? nom.nominee : ''}" 
-                                            class="nomination-badge text-xs ${isWatched ? 'bg-red-900 text-yellow-100 border-yellow-600' : 'bg-white text-gray-800 border-yellow-700'} px-3 py-1 font-semibold border uppercase tracking-wide ${nom.nominee ? 'cursor-pointer' : ''}"
-                                        >${nom.category}</span>`
-                                    ).join('')}
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <div class="text-xs font-bold ${isWatched ? 'text-yellow-300' : 'text-gray-700'} mb-2 uppercase tracking-wider">📺 Available On</div>
-                                <div class="flex flex-wrap gap-2">
-                                    ${movie.streaming.map(platform => {
-                                        const url = platformUrls[platform] || '#';
-                                        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-xs ${isWatched ? 'bg-red-900 text-yellow-100 border-yellow-600 hover:bg-red-800' : 'bg-white text-gray-800 border-gray-400 hover:bg-gray-50'} px-3 py-1.5 font-bold border uppercase tracking-wide inline-block transition-all hover:scale-105">${platform}</a>`;
-                                    }).join('')}
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center gap-2 text-sm ${isWatched ? 'text-yellow-100' : 'text-gray-600'} font-semibold">
-                                <span class="text-lg">👥</span>
-                                <span>${watchedByCount}</span>
-                                <span class="uppercase tracking-wide">${watchedByCount === 1 ? 'Member' : 'Members'} Viewed</span>
-                            </div>
-                        </div>
+        return `
+        <div class="movie-card ${w?'checked-card':''} rounded-sm shadow-lg overflow-hidden fade-in">
+            <img data-src="${movie.poster}" alt="${movie.title}"
+                class="lazy-poster poster-placeholder w-full h-auto object-contain"
+                onerror="this.style.display='none'" style="max-height:450px;min-height:180px">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-bold ${w?'text-yellow-100':'text-gray-900'} flex-1 leading-tight">${movie.title}</h3>
+                    <button onclick="toggleMovie(${movie.id})"
+                        class="ml-3 flex-shrink-0 ${w?'text-yellow-500':'text-gray-400'} hover:scale-125 transition-all"
+                        title="${w?'Watched':'Mark as watched'}">
+                        <svg class="w-8 h-8" fill="${w?'currentColor':'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-sm ${w?'text-yellow-100':'text-gray-600'} mb-4 leading-relaxed">${movie.info}</p>
+                <div class="mb-4 pb-4 border-b ${w?'border-red-800':'border-gray-200'}">
+                    <button onclick="toggleNominations(${movie.id})"
+                        class="w-full text-left text-xs font-bold ${w?'text-yellow-300':'text-yellow-700'} mb-2 uppercase tracking-wider hover:opacity-80 flex items-center justify-between">
+                        <span>🏆 ${movie.nominationCount} Nomination${movie.nominationCount!==1?'s':''}</span>
+                        <span class="nominations-arrow-${movie.id} transition-transform">▼</span>
+                    </button>
+                    <div id="nominations-${movie.id}" class="hidden flex-wrap gap-2">
+                        ${movie.nominations.map(nom=>`
+                            <span data-nominee="${nom.nominee||''}"
+                                class="nomination-badge text-xs ${w?'bg-red-900 text-yellow-100 border-yellow-600':'bg-white text-gray-800 border-yellow-700'} px-3 py-1 font-semibold border uppercase tracking-wide">
+                                ${nom.category}
+                            </span>`).join('')}
                     </div>
-                `;
-            }).join('');
-        }
-
-        function updateStats() {
-            const watched = window.userWatched ? window.userWatched.size : 0;
-            document.getElementById('yourProgress').textContent = `${watched}/${movies.length}`;
-            document.getElementById('totalGuests').textContent = Object.keys(window.allUsers || {}).length;
-        }
-        
-        function toggleNominations(movieId) {
-            const nominationsDiv = document.getElementById(`nominations-${movieId}`);
-            const arrow = document.querySelector(`.nominations-arrow-${movieId}`);
-            
-            if (nominationsDiv.classList.contains('hidden')) {
-                nominationsDiv.classList.remove('hidden');
-                nominationsDiv.classList.add('flex');
-                if (arrow) arrow.style.transform = 'rotate(180deg)';
-            } else {
-                nominationsDiv.classList.add('hidden');
-                nominationsDiv.classList.remove('flex');
-                if (arrow) arrow.style.transform = 'rotate(0deg)';
-            }
-        }
-
-        // Initialize on load
-        init();
-        
-        function switchPage(page) {
-            currentPage = page;
-            
-            // Update tabs
-            document.querySelectorAll('.page-tab').forEach(tab => {
-                tab.classList.remove('gold-gradient', 'text-gray-900', 'shadow-md', 'border-yellow-600');
-                tab.classList.add('bg-gray-100', 'text-gray-800', 'border-gray-300');
-            });
-            document.getElementById(`tab-${page}`).classList.remove('bg-gray-100', 'text-gray-800', 'border-gray-300');
-            document.getElementById(`tab-${page}`).classList.add('gold-gradient', 'text-gray-900', 'shadow-md', 'border-yellow-600');
-            
-            // Update page content
-            document.querySelectorAll('.page-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            document.getElementById(`page-${page}`).classList.remove('hidden');
-            
-            if (page === 'predictions') {
-                renderPredictions();
-                renderLeaderboard();
-            }
-        }
-        
-        function renderPredictions() {
-            const container = document.getElementById('predictionsContainer');
-            
-            const mainCategoriesHTML = oscarCategories.map(category => `
-                <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white">
-                    <h4 class="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide">🏆 ${category.name}</h4>
-                    <div class="space-y-2">
-                        ${category.nominees.map(nominee => `
-                            <label class="flex items-center gap-3 p-3 rounded-sm border-2 border-gray-200 hover:border-yellow-600 hover:bg-yellow-50 cursor-pointer transition-all">
-                                <input 
-                                    type="radio" 
-                                    name="${category.id}" 
-                                    value="${nominee}"
-                                    ${userPredictions[category.id] === nominee ? 'checked' : ''}
-                                    class="w-5 h-5 text-yellow-600 focus:ring-yellow-500"
-                                    onchange="updatePrediction('${category.id}', '${nominee.replace(/'/g, "\\'")}')"
-                                >
-                                <span class="font-semibold text-gray-800">${nominee}</span>
-                            </label>
+                </div>
+                <div class="mb-4">
+                    <div class="text-xs font-bold ${w?'text-yellow-300':'text-gray-700'} mb-2 uppercase tracking-wider">📺 Available On</div>
+                    <div class="flex flex-wrap gap-2">
+                        ${movie.streaming.map(p=>`
+                            <a href="${(platformUrls[p]||'#')+encodeURIComponent(movie.title)}" target="_blank" rel="noopener noreferrer"
+                                class="text-xs ${w?'bg-red-900 text-yellow-100 border-yellow-600 hover:bg-red-800':'bg-white text-gray-800 border-gray-400 hover:bg-gray-50'} px-3 py-1.5 font-bold border uppercase tracking-wide inline-block transition-all hover:scale-105">${p}</a>
                         `).join('')}
                     </div>
                 </div>
-            `).join('');
-            
-            const bonusCategoriesHTML = `
-                <div class="mt-10 pt-10 border-t-4 border-yellow-600">
-                    <div class="text-center mb-6">
-                        <h3 class="text-3xl font-bold mb-2" style="background: linear-gradient(135deg, #800020 0%, #a0143e 50%, #800020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                            Bonus Categories
-                        </h3>
-                        <p class="text-sm text-gray-600 uppercase tracking-wide font-semibold mb-4">Optional - Predict these for extra points!</p>
-                        <button 
-                            onclick="document.getElementById('submitSection').scrollIntoView({ behavior: 'smooth', block: 'center' })"
-                            class="px-6 py-2 text-sm font-bold uppercase tracking-wide bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200 transition-all rounded-sm"
-                        >
-                            Skip to Submit ↓
-                        </button>
-                    </div>
-                    <div class="space-y-6">
-                        ${bonusCategories.map(category => `
-                            <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white">
-                                <h4 class="text-lg font-bold text-gray-900 mb-4 uppercase tracking-wide flex items-center gap-2">
-                                    <span class="text-yellow-600">⭐</span> ${category.name}
-                                </h4>
-                                <div class="space-y-2">
-                                    ${category.nominees.map(nominee => `
-                                        <label class="flex items-center gap-3 p-3 rounded-sm border-2 border-gray-200 hover:border-yellow-600 hover:bg-yellow-50 cursor-pointer transition-all bg-white">
-                                            <input 
-                                                type="radio" 
-                                                name="${category.id}" 
-                                                value="${nominee}"
-                                                ${userPredictions[category.id] === nominee ? 'checked' : ''}
-                                                class="w-5 h-5 text-yellow-600 focus:ring-yellow-500"
-                                                onchange="updatePrediction('${category.id}', '${nominee.replace(/'/g, "\\'")}')"
-                                            >
-                                            <span class="font-semibold text-gray-800">${nominee}</span>
-                                        </label>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
+                <div class="flex items-center gap-2 text-sm ${w?'text-yellow-100':'text-gray-600'} font-semibold">
+                    <span class="text-lg">👥</span><span>${watchedBy}</span>
+                    <span class="uppercase tracking-wide">${watchedBy===1?'Member':'Members'} Viewed</span>
                 </div>
-            `;
-            
-            container.innerHTML = mainCategoriesHTML + bonusCategoriesHTML;
-        }
-        
-        function updatePrediction(categoryId, nominee) {
-            userPredictions[categoryId] = nominee;
-        }
-        
-        async function savePredictions() {
-            if (Object.keys(userPredictions).length === 0) {
-                showSaveStatus('Please make at least one prediction!', 'error');
-                return;
-            }
-            
-            try {
-                const predKey = `predictions:${currentUser}`;
-                await window.storage.set(predKey, JSON.stringify(userPredictions), true);
-                
-                // Update all users list
-                if (!window.allUsers[currentUser]) {
-                    window.allUsers[currentUser] = { watched: [], emoji: currentUserEmoji };
-                }
-                window.allUsers[currentUser].predictions = userPredictions;
-                await saveAllUsers();
-                
-                showSaveStatus(`✓ Your predictions have been saved! You've predicted ${Object.keys(userPredictions).length}/${oscarCategories.length} categories.`, 'success');
-                renderLeaderboard();
-            } catch (err) {
-                console.error('Error saving predictions:', err);
-                showSaveStatus('Failed to save predictions. Please try again.', 'error');
-            }
-        }
-        
-        function showSaveStatus(message, type) {
-            const statusDiv = document.getElementById('saveStatus');
-            statusDiv.textContent = message;
-            statusDiv.className = `mt-4 p-4 rounded-sm text-center font-semibold ${
-                type === 'success' 
-                    ? 'bg-green-100 text-green-800 border-2 border-green-600' 
-                    : 'bg-red-100 text-red-800 border-2 border-red-600'
-            }`;
-            statusDiv.classList.remove('hidden');
-            
-            // Hide after 5 seconds
-            setTimeout(() => {
-                statusDiv.classList.add('hidden');
-            }, 5000);
-        }
-        
-        async function clearMyData() {
-            if (!confirm('Are you sure you want to clear ALL your data (watch list and predictions)? This cannot be undone.')) {
-                return;
-            }
-            
-            try {
-                // Clear watch list
-                const userKey = `watched:${currentUser}`;
-                await window.storage.set(userKey, JSON.stringify([]));
-                window.userWatched = new Set();
-                
-                // Clear predictions
-                const predKey = `predictions:${currentUser}`;
-                await window.storage.set(predKey, JSON.stringify({}));
-                userPredictions = {};
-                
-                // Update UI
-                renderMovies();
-                updateStats();
-                renderPredictions();
-                renderLeaderboard();
-                
-                showSaveStatus('✓ All your data has been cleared.', 'success');
-            } catch (err) {
-                console.error('Error clearing data:', err);
-                showSaveStatus('Failed to clear data. Please try again.', 'error');
-            }
-        }
-        
-        async function loadPredictions() {
-            try {
-                const predKey = `predictions:${currentUser}`;
-                const result = await window.storage.get(predKey, true);
-                if (result && result.value) {
-                    userPredictions = JSON.parse(result.value);
-                }
-            } catch (err) {
-                console.error('Error loading predictions:', err);
-                userPredictions = {};
-            }
-        }
-        
-        function renderLeaderboard() {
-            const leaderboard = document.getElementById('leaderboard');
-            const guests = Object.keys(window.allUsers || {});
-            
-            const guestsWithPredictions = guests.filter(name => {
-                const user = window.allUsers[name];
-                return user.predictions && Object.keys(user.predictions).length > 0;
-            }).map(name => {
-                const user = window.allUsers[name];
-                const predictionCount = Object.keys(user.predictions || {}).length;
-                const totalCategories = oscarCategories.length + bonusCategories.length;
-                return {
-                    name,
-                    emoji: user.emoji || '🎬',
-                    predictionCount,
-                    totalCategories,
-                    mainPredictions: Object.keys(user.predictions || {}).filter(key => 
-                        oscarCategories.some(cat => cat.id === key)
-                    ).length,
-                    bonusPredictions: Object.keys(user.predictions || {}).filter(key => 
-                        bonusCategories.some(cat => cat.id === key)
-                    ).length
-                };
-            }).sort((a, b) => b.predictionCount - a.predictionCount);
-            
-            if (guestsWithPredictions.length === 0) {
-                leaderboard.innerHTML = '<p class="text-center text-gray-600 py-8">No predictions yet. Be the first to make your picks!</p>';
-                return;
-            }
-            
-            leaderboard.innerHTML = guestsWithPredictions.map((guest, index) => `
-                <div class="flex items-center justify-between p-4 ${guest.name === currentUser ? 'bg-gradient-to-r from-yellow-50 to-yellow-100 border-2 border-yellow-600' : 'bg-gray-50 border-2 border-gray-200'} rounded-sm">
-                    <div class="flex items-center gap-4">
-                        <span class="text-2xl font-bold text-gray-400 w-8">#${index + 1}</span>
-                        <span class="text-2xl">${guest.emoji}</span>
-                        <div>
-                            <div class="font-bold text-gray-900 uppercase tracking-wide">
-                                ${guest.name}
-                                ${guest.name === currentUser ? '<span class="text-yellow-700 text-xs ml-2">(YOU)</span>' : ''}
-                            </div>
-                            <div class="text-sm text-gray-600">
-                                ${guest.mainPredictions}/${oscarCategories.length} main • ${guest.bonusPredictions}/${bonusCategories.length} bonus
-                            </div>
-                        </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    // Kick off lazy loading after grid is in the DOM
+    initLazyPosters();
+}
+
+function updateStats() {
+    document.getElementById('yourProgress').textContent = `${window.userWatched.size}/${movies.length}`;
+    document.getElementById('totalGuests').textContent = allUsersData.length;
+}
+
+function toggleNominations(id) {
+    const div = document.getElementById(`nominations-${id}`);
+    const arrow = document.querySelector(`.nominations-arrow-${id}`);
+    const open = div.classList.contains('hidden');
+    div.classList.toggle('hidden', !open);
+    div.classList.toggle('flex', open);
+    if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+// ── PAGE SWITCHING ────────────────────────────────────────────────────────────
+function switchPage(page) {
+    currentPage = page;
+    document.querySelectorAll('.page-tab').forEach(t => {
+        t.classList.remove('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
+        t.classList.add('bg-gray-100','text-gray-800','border-gray-300');
+    });
+    document.getElementById(`tab-${page}`).classList.remove('bg-gray-100','text-gray-800','border-gray-300');
+    document.getElementById(`tab-${page}`).classList.add('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
+    document.querySelectorAll('.page-content').forEach(c => c.classList.add('hidden'));
+    document.getElementById(`page-${page}`).classList.remove('hidden');
+    if (page === 'predictions') { renderPredictions(); renderLeaderboard(); }
+}
+
+// ── PREDICTIONS ───────────────────────────────────────────────────────────────
+function renderPredictions() {
+    const container = document.getElementById('predictionsContainer');
+    function catHTML(cat, bonus) {
+        return `
+        <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white">
+            <h4 class="text-${bonus?'lg':'xl'} font-bold text-gray-900 mb-4 uppercase tracking-wide">${bonus?'⭐':'🏆'} ${cat.name}</h4>
+            <div class="space-y-2">
+                ${cat.nominees.map(nom => {
+                    const safe = nom.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+                    return `<label class="flex items-center gap-3 p-3 rounded-sm border-2 border-gray-200 hover:border-yellow-600 hover:bg-yellow-50 cursor-pointer transition-all bg-white">
+                        <input type="radio" name="${cat.id}" value="${nom.replace(/"/g,'&quot;')}"
+                            ${userPredictions[cat.id]===nom?'checked':''}
+                            class="w-5 h-5 text-yellow-600 focus:ring-yellow-500"
+                            onchange="updatePrediction('${cat.id}','${safe}')">
+                        <span class="font-semibold text-gray-800">${nom}</span>
+                    </label>`;
+                }).join('')}
+            </div>
+        </div>`;
+    }
+    container.innerHTML =
+        oscarCategories.map(c=>catHTML(c,false)).join('') +
+        `<div class="mt-10 pt-10 border-t-4 border-yellow-600">
+            <div class="text-center mb-6">
+                <h3 class="text-3xl font-bold mb-2" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Bonus Categories</h3>
+                <p class="text-sm text-gray-600 uppercase tracking-wide font-semibold mb-4">Optional — predict these for extra points!</p>
+                <button onclick="document.getElementById('submitSection').scrollIntoView({behavior:'smooth',block:'center'})"
+                    class="px-6 py-2 text-sm font-bold uppercase tracking-wide bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200 transition-all rounded-sm">Skip to Submit ↓</button>
+            </div>
+            <div class="space-y-6">${bonusCategories.map(c=>catHTML(c,true)).join('')}</div>
+        </div>`;
+}
+
+function updatePrediction(catId, nominee) { userPredictions[catId] = nominee; }
+
+async function savePredictions() {
+    if (!Object.keys(userPredictions).length) { showSaveStatus('Please make at least one prediction!','error'); return; }
+    try {
+        showToast('Saving…','saving');
+        await api({ action:'savePredictions', name:currentUser, predictions:JSON.stringify(userPredictions) });
+        allPredsData = allPredsData.filter(r => r.name !== currentUser);
+        Object.entries(userPredictions).forEach(([cat,nom]) => allPredsData.push({name:currentUser,category:cat,nominee:nom}));
+        hideToast();
+        showSaveStatus(`✓ Saved! ${Object.keys(userPredictions).length} predictions recorded.`,'success');
+        renderLeaderboard();
+    } catch(err) {
+        hideToast();
+        showSaveStatus('Save failed: '+err.message,'error');
+    }
+}
+
+function showSaveStatus(msg, type) {
+    const el = document.getElementById('saveStatus');
+    el.textContent = msg;
+    el.className = `mt-4 p-4 rounded-sm text-center font-semibold ${type==='success'?'bg-green-100 text-green-800 border-2 border-green-600':'bg-red-100 text-red-800 border-2 border-red-600'}`;
+    el.classList.remove('hidden');
+    setTimeout(()=>el.classList.add('hidden'), 5000);
+}
+
+async function clearMyData() {
+    if (!confirm('Clear ALL your data (watch list and predictions)? This cannot be undone.')) return;
+    try {
+        showToast('Clearing…','saving');
+        await api({ action:'clearUser', name:currentUser, emoji:currentUserEmoji });
+        window.userWatched = new Set();
+        userPredictions = {};
+        const myRow = allUsersData.find(r=>r.name===currentUser);
+        if (myRow) myRow.watched = '';
+        allPredsData = allPredsData.filter(r=>r.name!==currentUser);
+        hideToast();
+        renderMovies();
+        updateStats();
+        renderPredictions();
+        renderLeaderboard();
+        showSaveStatus('✓ All your data has been cleared.','success');
+    } catch(err) {
+        hideToast();
+        showSaveStatus('Failed to clear: '+err.message,'error');
+    }
+}
+
+// ── LEADERBOARD ───────────────────────────────────────────────────────────────
+function renderLeaderboard() {
+    const el = document.getElementById('leaderboard');
+    const guests = allUsersData.map(u => {
+        const preds = allPredsData.filter(r=>r.name===u.name);
+        const mainCount = preds.filter(r=>oscarCategories.some(c=>c.id===r.category)).length;
+        const bonusCount = preds.filter(r=>bonusCategories.some(c=>c.id===r.category)).length;
+        return { name:u.name, emoji:u.emoji||'🎬', mainCount, bonusCount, total:preds.length };
+    }).filter(g=>g.total>0).sort((a,b)=>b.total-a.total);
+
+    if (!guests.length) {
+        el.innerHTML='<p class="text-center text-gray-600 py-8">No predictions yet. Be the first to make your picks!</p>';
+        return;
+    }
+    el.innerHTML = guests.map((g,i)=>`
+        <div class="flex items-center justify-between p-4 ${g.name===currentUser?'bg-gradient-to-r from-yellow-50 to-yellow-100 border-2 border-yellow-600':'bg-gray-50 border-2 border-gray-200'} rounded-sm">
+            <div class="flex items-center gap-4">
+                <span class="text-2xl font-bold text-gray-400 w-8">#${i+1}</span>
+                <span class="text-2xl">${g.emoji}</span>
+                <div>
+                    <div class="font-bold text-gray-900 uppercase tracking-wide">
+                        ${g.name}${g.name===currentUser?' <span class="text-yellow-700 text-xs ml-2">(YOU)</span>':''}
                     </div>
-                    <div class="text-right">
-                        <div class="text-2xl font-bold text-yellow-700">${guest.predictionCount}</div>
-                        <div class="text-xs text-gray-600 uppercase">Total Picks</div>
-                    </div>
+                    <div class="text-sm text-gray-600">${g.mainCount}/${oscarCategories.length} main • ${g.bonusCount}/${bonusCategories.length} bonus</div>
                 </div>
-            `).join('');
-        }
-    </script>
+            </div>
+            <div class="text-right">
+                <div class="text-2xl font-bold text-yellow-700">${g.total}</div>
+                <div class="text-xs text-gray-600 uppercase">Total Picks</div>
+            </div>
+        </div>`).join('');
+}
+
+init();
+</script>
 </body>
 </html>
