@@ -41,8 +41,61 @@
         .toast-err { background:#fef2f2; color:#991b1b; border-color:#dc2626; }
         /* Poster placeholder shimmer while lazy-loading */
         .poster-placeholder { background: linear-gradient(90deg, #e8e0cc 25%, #f5f0e8 50%, #e8e0cc 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; min-height: 200px; }
-        @media(max-width:768px){body{font-size:14px}h1{font-size:2.5rem!important}h2{font-size:1.75rem!important}.oscar-card{padding:1rem!important}.movie-card{margin-bottom:1.5rem}button{min-height:44px}#movieSearch,input[type="text"]{font-size:16px!important}.filter-btn{font-size:.75rem!important;padding:.5rem 1rem!important}.nomination-badge{font-size:.7rem!important;padding:.4rem .6rem!important}.text-5xl{font-size:2.5rem!important}.text-3xl{font-size:1.5rem!important}.text-2xl{font-size:1.25rem!important}}
-        @media(max-width:480px){h1{font-size:2rem!important}h2{font-size:1.5rem!important}#moviesGrid{grid-template-columns:1fr!important}.text-5xl{font-size:2rem!important}}
+        /* ── Mobile ────────────────────────────────────────────────────────── */
+        @media(max-width:768px){
+            body { font-size:14px; }
+            h1 { font-size:2.2rem!important; }
+            h2 { font-size:1.6rem!important; }
+            .oscar-card { padding:1rem!important; }
+            .movie-card { margin-bottom:1rem; }
+            /* 44px min touch targets */
+            button, a { min-height:44px; }
+            /* Prevent iOS zoom on focus */
+            #movieSearch, input[type="text"] { font-size:16px!important; }
+            /* Tabs stack nicely */
+            #pageTabs { gap:0.5rem!important; }
+            .page-tab { padding:0.6rem 1.2rem!important; font-size:0.7rem!important; }
+            /* Filter bar wraps cleanly */
+            .filter-btn { font-size:.7rem!important; padding:.5rem .75rem!important; min-height:40px; }
+            .sub-filter-btn { font-size:.7rem!important; padding:.4rem .6rem!important; min-height:36px; }
+            /* Nomination badges */
+            .nomination-badge { font-size:.65rem!important; padding:.35rem .5rem!important; }
+            /* Stats numbers */
+            .text-5xl { font-size:2rem!important; }
+            .text-3xl { font-size:1.4rem!important; }
+            .text-2xl { font-size:1.1rem!important; }
+            /* Movie card title */
+            .movie-card h3 { font-size:1.1rem!important; }
+            /* Prediction radio rows */
+            .prediction-category { padding:.75rem!important; }
+            label.flex { padding:.6rem!important; }
+            /* Leaderboard rows */
+            #leaderboard .flex { padding:.75rem!important; gap:.5rem!important; }
+            /* Header trophy smaller */
+            .float span { font-size:4rem!important; }
+        }
+        @media(max-width:480px){
+            h1 { font-size:1.75rem!important; }
+            h2 { font-size:1.3rem!important; }
+            #moviesGrid { grid-template-columns:1fr!important; }
+            .text-5xl { font-size:1.75rem!important; }
+            /* Full-width tabs */
+            #pageTabs { flex-direction:row; width:100%; }
+            .page-tab { flex:1; text-align:center; padding:.6rem .5rem!important; font-size:.65rem!important; }
+            /* Search bar full width */
+            #movieSearch { min-width:unset!important; }
+            /* Filter buttons scroll horizontally */
+            .flex.flex-wrap.gap-2 { flex-wrap:nowrap; overflow-x:auto; padding-bottom:.25rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+            .flex.flex-wrap.gap-2::-webkit-scrollbar { display:none; }
+            /* Sub-filters scroll horizontally too */
+            #subFilters { flex-wrap:nowrap!important; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+            #subFilters::-webkit-scrollbar { display:none; }
+            /* In the lead grid 2 cols */
+            .grid.grid-cols-2.md\\:grid-cols-5 { grid-template-columns:repeat(2,1fr)!important; }
+            /* Leaderboard compact */
+            #leaderboard .text-2xl.font-bold.text-gray-400 { font-size:1rem!important; width:1.5rem!important; }
+            #leaderboard .text-2xl.font-bold.text-yellow-700 { font-size:1.25rem!important; }
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -70,7 +123,7 @@
 
     <!-- Name Entry -->
     <div id="nameEntry" class="mb-12 max-w-lg mx-auto fade-in">
-        <div class="oscar-card p-10 art-deco-border">
+                    <div class="oscar-card p-10 art-deco-border max-w-lg mx-auto">
             <div class="text-center">
                 <input type="text" id="userName" placeholder="Please enter your name"
                     class="w-full px-6 py-4 border-2 border-yellow-600 bg-white text-gray-800 font-semibold rounded-sm focus:outline-none focus:border-yellow-500 mb-4 text-center text-lg uppercase tracking-wide">
@@ -135,15 +188,15 @@
 
             <div class="oscar-card p-6 mb-10">
                 <div class="flex flex-wrap items-center gap-4">
-                    <div class="flex-1 min-w-[300px]">
-                        <input type="text" id="movieSearch" placeholder="Search by name or title"
+                    <div class="flex-1 min-w-0">
+                        <input type="text" id="movieSearch" placeholder="Search films…"
                             class="w-full px-4 py-3 border-2 border-gray-300 bg-white text-gray-800 font-semibold rounded-md focus:outline-none focus:border-yellow-600 text-sm"
                             oninput="filterMovies()">
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="setFilter('all',this)" class="filter-btn px-5 py-3 font-bold transition-all gold-gradient text-gray-900 shadow-md uppercase tracking-wide text-xs border-2 border-yellow-600 rounded-md">All Films</button>
                         <button onclick="setFilter('streaming',this)" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">By Platform</button>
-                        <button onclick="setFilter('category',this)" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">By Category</button>
+                        <button onclick="setFilter('category',this)" class="filter-btn px-5 py-3 font-bold transition-all bg-gray-100 text-gray-800 hover:bg-gray-200 uppercase tracking-wide text-xs border-2 border-gray-300 rounded-md">By Nomination</button>
                     </div>
                 </div>
                 <div id="subFilters"></div>
@@ -401,21 +454,21 @@ function setFilter(type, btn) {
     if (type === 'streaming') {
         const platforms = [...new Set(movies.flatMap(m => m.streaming))].sort();
         sub.innerHTML = platforms.map(p =>
-            `<button onclick="setSubFilter('${p}',this)" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${p}</button>`
+            `<button onclick="setSubFilter(this)" data-filter="${p}" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${p}</button>`
         ).join('');
         sub.classList.add('open');
     } else if (type === 'category') {
         const cats = [...new Set(movies.flatMap(m => m.nominations.map(n => n.category)))].sort();
         sub.innerHTML = cats.map(c =>
-            `<button onclick="setSubFilter(${JSON.stringify(c)},this)" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${c}</button>`
+            `<button onclick="setSubFilter(this)" data-filter="${c.replace(/"/g,'&quot;')}" class="sub-filter-btn px-4 py-2 text-sm font-bold transition-all bg-white text-gray-700 hover:bg-gray-50 uppercase tracking-wide border-2 border-gray-300">${c}</button>`
         ).join('');
         sub.classList.add('open');
     }
     renderMovies();
 }
 
-function setSubFilter(filter, btn) {
-    currentSubFilter = filter;
+function setSubFilter(btn) {
+    currentSubFilter = btn.dataset.filter;
     document.querySelectorAll('.sub-filter-btn').forEach(b => {
         b.classList.remove('gold-gradient','text-gray-900','shadow-md','border-yellow-600');
         b.classList.add('bg-white','text-gray-700','border-gray-300');
