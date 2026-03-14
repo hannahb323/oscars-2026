@@ -44,6 +44,7 @@
         .prediction-category.answered { border-color: #d4af37; background: linear-gradient(135deg,#fffdf0 0%,#faf8f3 100%); }
         .prediction-category.answered h4::after { content: ' ✓'; color: #d4af37; }
         @keyframes scrollPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
         /* ── Mobile ────────────────────────────────────────────────────────── */
         @media(max-width:768px){
             body { font-size:14px; }
@@ -157,13 +158,20 @@
             </div>
 
             <div class="oscar-card p-6 mb-6 art-deco-border">
-                <h3 class="text-2xl font-bold text-center mb-4" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">In the lead…</h3>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center text-sm">
-                    <div><div class="font-bold" style="color:#800020">🏆 Most Accurate</div><div class="text-xs text-gray-600">Best predictions</div></div>
-                    <div><div class="font-bold" style="color:#800020">📺 Top Streamer</div><div class="text-xs text-gray-600">Most streaming films</div></div>
-                    <div><div class="font-bold" style="color:#800020">🎬 Cinephile</div><div class="text-xs text-gray-600">Most movies watched</div></div>
-                    <div><div class="font-bold" style="color:#800020">🎟️ Theater Buff</div><div class="text-xs text-gray-600">Most theater movies</div></div>
-                    <div><div class="font-bold" style="color:#800020">⭐ Bonus Champion</div><div class="text-xs text-gray-600">Most bonus picks</div></div>
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <h3 class="text-2xl font-bold" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">In the lead…</h3>
+                    <button onclick="refreshData()" id="refreshBtn" title="Refresh data" class="text-yellow-600 hover:text-yellow-500 transition-all" style="background:none;border:none;min-height:unset;padding:4px;">
+                        <svg id="refreshIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="text-center text-xs text-gray-400 mb-3" id="lastUpdated"></div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm" id="inTheLead">
+                    <div><div class="font-bold" style="color:#800020">📺 Top Streamer</div><div class="text-xs text-gray-500 mb-1">Most streaming films</div><div class="font-semibold text-gray-800" id="lead-streamer">—</div></div>
+                    <div><div class="font-bold" style="color:#800020">🎬 Cinephile</div><div class="text-xs text-gray-500 mb-1">Most movies watched</div><div class="font-semibold text-gray-800" id="lead-cinephile">—</div></div>
+                    <div><div class="font-bold" style="color:#800020">🎟️ Theater Buff</div><div class="text-xs text-gray-500 mb-1">Most theater movies</div><div class="font-semibold text-gray-800" id="lead-theater">—</div></div>
+                    <div><div class="font-bold" style="color:#800020">⭐ Bonus Champion</div><div class="text-xs text-gray-500 mb-1">Most bonus picks</div><div class="font-semibold text-gray-800" id="lead-bonus">—</div></div>
                 </div>
             </div>
 
@@ -224,7 +232,7 @@ function api(params) {
         const timeout = setTimeout(() => {
             delete window[cbName]; script.remove();
             reject(new Error('Request timed out'));
-        }, 15000);
+        }, 30000);
         window[cbName] = (data) => {
             clearTimeout(timeout); delete window[cbName]; script.remove();
             if (data.error) reject(new Error(data.error));
@@ -249,9 +257,9 @@ function hideToast() { document.getElementById('toast').classList.remove('show')
 
 const movies = [
     {id:1,title:"Marty Supreme",poster:"https://m.media-amazon.com/images/M/MV5BZTRhYjI1MTItMWYwMi00MjY5LWI1OTktMzQwNzA3MWJlN2QyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Josh Safdie"},{category:"Best Actor",nominee:"Timothée Chalamet"},{category:"Best Original Screenplay",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Cinematography",nominee:"Darius Khondji"},{category:"Best Film Editing",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Production Design",nominee:"Jack Fisk"},{category:"Best Casting",nominee:"Jennifer Venditti"}],streaming:["Theaters"],nominationCount:8,info:"Josh Safdie's ping pong drama with Timothée Chalamet"},
-    {id:2,title:"Hamnet",poster:"https://upload.wikimedia.org/wikipedia/en/1/1f/Hamnet_film_poster.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Chloé Zhao"},{category:"Best Actress",nominee:"Jessie Buckley"},{category:"Best Adapted Screenplay",nominee:"Chloé Zhao & Maggie O'Farrell"},{category:"Best Original Score",nominee:"Max Richter"},{category:"Best Costume Design",nominee:"Malgosia Turzanska"},{category:"Best Production Design",nominee:"Fiona Crombie"},{category:"Best Casting",nominee:"Nina Gold"}],streaming:["Peacock"],nominationCount:8,info:"Chloé Zhao's Shakespearean drama"},
+    {id:2,title:"Hamnet",poster:"https://upload.wikimedia.org/wikipedia/en/1/1f/Hamnet_film_poster.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Chloé Zhao"},{category:"Best Actress",nominee:"Jessie Buckley"},{category:"Best Adapted Screenplay",nominee:"Chloé Zhao & Maggie O'Farrell"},{category:"Best Original Score",nominee:"Max Richter"},{category:"Best Costume Design",nominee:"Malgosia Turzanska"},{category:"Best Production Design",nominee:"Fiona Crombie"},{category:"Best Casting",nominee:"Nina Gold"}],streaming:["Theaters"],nominationCount:8,info:"Chloé Zhao's Shakespearean drama"},
     {id:3,title:"Zootopia 2",poster:"https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Animated Feature",nominee:"Jared Bush, Byron Howard"}],streaming:["Theaters"],nominationCount:1,info:"The sequel to Disney's beloved animated hit"},
-    {id:4,title:"The Secret Agent",poster:"https://resizing.flixster.com/YBTbc6VIpar20XFi7a0tCAPmcd8=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzcwNWE0M2ZkLTBiMGEtNDNmNC1iMGY1LTU1ZmNlNjdjYzNiZC5qcGc=",nominations:[{category:"Best Picture",nominee:""},{category:"Best Actor",nominee:"Wagner Moura"},{category:"Best International Feature",nominee:"Brazil"},{category:"Best Casting",nominee:"Gabriel Domingues"}],streaming:["Theaters"],nominationCount:4,info:"Brazilian drama with Wagner Moura"},
+    {id:4,title:"The Secret Agent",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/5/57/The_Secret_Agent.png/250px-The_Secret_Agent.png",nominations:[{category:"Best Picture",nominee:""},{category:"Best Actor",nominee:"Wagner Moura"},{category:"Best International Feature",nominee:"Brazil"},{category:"Best Casting",nominee:"Gabriel Domingues"}],streaming:["Theaters"],nominationCount:4,info:"Brazilian drama with Wagner Moura"},
     {id:5,title:"Sentimental Value",poster:"https://miro.medium.com/1*XBRV5ALCoSNp3r4yK4MsJg.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Joachim Trier"},{category:"Best Actress",nominee:"Renate Reinsve"},{category:"Best Supporting Actor",nominee:"Stellan Skarsgård"},{category:"Best Supporting Actress",nominee:"Elle Fanning & Inga Ibsdotter Lilleaas"},{category:"Best Original Screenplay",nominee:"Eskil Vogt & Joachim Trier"},{category:"Best Film Editing",nominee:"Olivier Bugge Coutté"}],streaming:["Theaters"],nominationCount:8,info:"Joachim Trier's Norwegian drama"},
     {id:6,title:"Frankenstein",poster:"https://upload.wikimedia.org/wikipedia/en/9/94/Frankenstein_2025_film_poster.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Supporting Actor",nominee:"Jacob Elordi"},{category:"Best Adapted Screenplay",nominee:"Guillermo del Toro"},{category:"Best Original Score",nominee:"Alexandre Desplat"},{category:"Best Cinematography",nominee:"Dan Laustsen"},{category:"Best Makeup and Hairstyling",nominee:"Mike Hill, Jordan Samuel, Cliona Furey"},{category:"Best Costume Design",nominee:"Kate Hawley"},{category:"Best Production Design",nominee:"Tamara Deverell"},{category:"Best Sound",nominee:"Greg Chapman, Nathan Robitaille, Nelson Ferreira, Christian Cooke, Brad Zoern"}],streaming:["Netflix"],nominationCount:9,info:"Guillermo del Toro's passion project"},
     {id:7,title:"KPop Demon Hunters",poster:"https://m.media-amazon.com/images/M/MV5BNTBiYWJlMjQtOTIyMy00NTY4LWFhOWItOWZhNzc3NGMyMjc2XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Animated Feature",nominee:"Maggie Kang, Chris Appelhans"},{category:"Best Original Song",nominee:"'Golden' - EJAE, Mark Sonnenblick"}],streaming:["Netflix"],nominationCount:2,info:"Animated adventure with original song 'Golden'"},
@@ -261,7 +269,7 @@ const movies = [
     {id:11,title:"Sinners",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Sinners_%282025_film%29_poster.jpg/250px-Sinners_%282025_film%29_poster.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Ryan Coogler"},{category:"Best Actor",nominee:"Michael B. Jordan"},{category:"Best Supporting Actor",nominee:"Delroy Lindo"},{category:"Best Supporting Actress",nominee:"Wunmi Mosaku"},{category:"Best Original Screenplay",nominee:"Ryan Coogler"},{category:"Best Original Score",nominee:"Ludwig Göransson"},{category:"Best Cinematography",nominee:"Autumn Durald Arkapaw"},{category:"Best Visual Effects",nominee:"Michael Ralla, Espen Nordahl, Guido Wolter, Donnie Dean"},{category:"Best Film Editing",nominee:"Michael P. Shawver"},{category:"Best Makeup and Hairstyling",nominee:"Ken Diaz, Mike Fontaine, Shunika Terry"},{category:"Best Costume Design",nominee:"Ruth E. Carter"},{category:"Best Production Design",nominee:"Hannah Beachler"},{category:"Best Sound",nominee:"Chris Welcker, Benjamin A. Burtt, Felipe Pacheco, Brandon Proctor, Steve Boeddeker"},{category:"Best Casting",nominee:"Francine Maisler"},{category:"Best Original Song",nominee:"'I Lied To You' - Raphael Saadiq & Ludwig Göransson"}],streaming:["HBO Max"],nominationCount:16,info:"Ryan Coogler's vampire epic — record-breaking 16 nominations!"},
     {id:12,title:"If I Had Legs I'd Kick You",poster:"https://m.media-amazon.com/images/M/MV5BMGRlMjIzMDctNzNkMS00MzEwLTlhZWEtM2FjYmE1ZmFjMzZlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Actress",nominee:"Rose Byrne"}],streaming:["HBO Max"],nominationCount:1,info:"Rose Byrne's powerful performance"},
     {id:13,title:"Weapons",poster:"https://m.media-amazon.com/images/M/MV5BNTBhNWJjZWItYzY3NS00M2NkLThmOWYtYTlmNzBmN2UxZWFjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Supporting Actress",nominee:"Amy Madigan"}],streaming:["HBO Max"],nominationCount:1,info:"Thriller featuring Amy Madigan"},
-    {id:14,title:"Song Sung Blue",poster:"https://resizing.flixster.com/q35fmE6JW4sTFAO0sbhJdpfzj9c=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzcwNWE0M2ZkLTBiMGEtNDNmNC1iMGY1LTU1ZmNlNjdjYzNiZC5qcGc=",nominations:[{category:"Best Actress",nominee:"Kate Hudson"}],streaming:["Peacock"],nominationCount:1,info:"Kate Hudson's dramatic turn"},
+    {id:14,title:"Song Sung Blue",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/6/65/Song_Sung_Blue_Official_Poster%2C_Nov_2025.jpg/250px-Song_Sung_Blue_Official_Poster%2C_Nov_2025.jpg",nominations:[{category:"Best Actress",nominee:"Kate Hudson"}],streaming:["Peacock"],nominationCount:1,info:"Kate Hudson's dramatic turn"},
     {id:15,title:"Bugonia",poster:"https://upload.wikimedia.org/wikipedia/en/thumb/2/27/Bugonia_film_poster.jpg/250px-Bugonia_film_poster.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Actress",nominee:"Emma Stone"},{category:"Best Adapted Screenplay",nominee:"Will Tracy"},{category:"Best Original Score",nominee:"Jerskin Fendrix"}],streaming:["Peacock"],nominationCount:4,info:"Yorgos Lanthimos & Emma Stone's sci-fi thriller"},
     {id:16,title:"F1",poster:"https://m.media-amazon.com/images/M/MV5BNGI0MDI4NjEtOWU3ZS00ODQyLWFhYTgtNGYxM2ZkM2Q2YjE3XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Film Editing",nominee:"Stephen Mirrione"},{category:"Best Sound",nominee:"Gareth John, Al Nelson, Gwendolyn Yates Whittle, Gary A. Rizzo, Juan Peralta"},{category:"Best Visual Effects",nominee:"Ryan Tudhope, Nicolas Chevallier, Robert Harrington, Keith Dawson"}],streaming:["Apple TV+"],nominationCount:4,info:"Brad Pitt's high-octane racing drama"},
     {id:17,title:"It Was Just an Accident",poster:"https://m.media-amazon.com/images/M/MV5BMWJkZmZlNjUtM2Q1OC00MmNjLWFkOWEtNjRhN2FkM2ZlMjI3XkEyXkFqcGc@._V1_.jpg",nominations:[{category:"Best Original Screenplay",nominee:"Jafar Panahi"},{category:"Best International Feature",nominee:"France"}],streaming:["Theaters"],nominationCount:2,info:"French drama from acclaimed director Jafar Panahi"},
@@ -375,12 +383,43 @@ async function loadAll() {
         allPredsData.filter(r => r.name === currentUser).forEach(r => { userPredictions[r.category] = r.nominee; });
         if (!myRow) api({ action: 'saveUser', name: currentUser, emoji: currentUserEmoji, watched: '' });
         hideToast();
+        setLastUpdated();
     } catch (err) {
-        showToast('Sheet sync failed — changes may not save', 'err');
+        showToast('Sync slow — try refreshing', 'err');
+        setLastUpdated(true);
     } finally {
         renderMovies();
         updateStats();
+        updateLeaders();
+        setRefreshing(false);
     }
+}
+
+function setLastUpdated(failed = false) {
+    const el = document.getElementById('lastUpdated');
+    if (!el) return;
+    if (failed) {
+        el.textContent = 'Sync failed — data may be outdated';
+        el.style.color = '#dc2626';
+    } else {
+        const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        el.textContent = `Last updated ${t}`;
+        el.style.color = '';
+    }
+}
+
+function setRefreshing(on) {
+    const icon = document.getElementById('refreshIcon');
+    const btn = document.getElementById('refreshBtn');
+    if (!icon) return;
+    icon.style.transition = 'transform 0.3s';
+    icon.style.animation = on ? 'spin 0.8s linear infinite' : '';
+    if (btn) btn.disabled = on;
+}
+
+async function refreshData() {
+    setRefreshing(true);
+    await loadAll();
 }
 
 async function toggleMovie(movieId) {
@@ -460,10 +499,11 @@ function filterMovies() {
 
     grid.innerHTML = list.map(movie => {
         const w = window.userWatched.has(movie.id);
-        const watchedBy = allUsersData.filter(u => {
+        const viewers = allUsersData.filter(u => {
             if (!u.watched) return false;
             return u.watched.toString().split(',').map(Number).includes(movie.id);
-        }).length;
+        });
+        const watchedBy = viewers.length;
         return `
         <div class="movie-card ${w?'checked-card':''} rounded-sm shadow-lg overflow-hidden fade-in">
             <img data-src="${movie.poster}" alt="${movie.title}"
@@ -505,9 +545,18 @@ function filterMovies() {
                         `).join('')}
                     </div>
                 </div>
-                <div class="flex items-center gap-2 text-sm ${w?'text-yellow-100':'text-gray-600'} font-semibold">
+                <div class="relative group flex items-center gap-2 text-sm ${w?'text-yellow-100':'text-gray-600'} font-semibold cursor-pointer" onclick="this.querySelector('.viewer-tooltip').classList.toggle('hidden')">
                     <span class="text-lg">👥</span><span>${watchedBy}</span>
                     <span class="uppercase tracking-wide">${watchedBy===1?'Member':'Members'} Viewed</span>
+                    ${watchedBy > 0 ? `<span class="text-xs opacity-60">(tap to see)</span>` : ''}
+                    ${watchedBy > 0 ? `
+                    <div class="viewer-tooltip hidden group-hover:block absolute bottom-full left-0 mb-2 z-50 min-w-max">
+                        <div class="rounded-sm border border-yellow-600 shadow-lg px-3 py-2" style="background:linear-gradient(135deg,#1a1a1a,#2d2d2d)">
+                            <div class="text-xs font-bold text-yellow-500 uppercase tracking-wide mb-1">Watched by</div>
+                            ${viewers.map(u => `<div class="text-sm text-yellow-100 py-0.5">${u.emoji || '🎬'} ${u.name}</div>`).join('')}
+                        </div>
+                        <div class="w-2 h-2 rotate-45 border-r border-b border-yellow-600 mx-3 -mt-1" style="background:#2d2d2d"></div>
+                    </div>` : ''}
                 </div>
             </div>
         </div>`;
@@ -518,6 +567,34 @@ function filterMovies() {
 function updateStats() {
     document.getElementById('yourProgress').textContent = `${window.userWatched.size}/${movies.length}`;
     document.getElementById('totalGuests').textContent = allUsersData.length;
+}
+
+function updateLeaders() {
+    const theaterIds = new Set(movies.filter(m => m.streaming.includes('Theaters')).map(m => m.id));
+    const streamingIds = new Set(movies.filter(m => m.streaming.some(p => p !== 'Theaters')).map(m => m.id));
+
+    let topStreamer = null, topCinephile = null, topTheater = null, topBonus = null;
+    let maxStream = 0, maxAll = 0, maxTheater = 0, maxBonus = 0;
+
+    allUsersData.forEach(u => {
+        const watched = u.watched ? u.watched.toString().split(',').map(Number).filter(Boolean) : [];
+        const streamCount = watched.filter(id => streamingIds.has(id)).length;
+        const theaterCount = watched.filter(id => theaterIds.has(id)).length;
+        const totalCount = watched.length;
+        const bonusCount = allPredsData.filter(r => r.name === u.name && bonusCategories.some(c => c.id === r.category)).length;
+
+        if (streamCount > maxStream)  { maxStream = streamCount;   topStreamer   = u; }
+        if (totalCount > maxAll)      { maxAll = totalCount;        topCinephile = u; }
+        if (theaterCount > maxTheater){ maxTheater = theaterCount;  topTheater   = u; }
+        if (bonusCount > maxBonus)    { maxBonus = bonusCount;      topBonus     = u; }
+    });
+
+    const fmt = (u, count, label) => u ? `${u.emoji || '🎬'} ${u.name} <span class="text-xs text-gray-500">(${count} ${label})</span>` : '<span class="text-gray-400 text-xs">No data yet</span>';
+
+    document.getElementById('lead-streamer').innerHTML  = fmt(topStreamer,   maxStream,   'films');
+    document.getElementById('lead-cinephile').innerHTML = fmt(topCinephile,  maxAll,      'films');
+    document.getElementById('lead-theater').innerHTML   = fmt(topTheater,    maxTheater,  'films');
+    document.getElementById('lead-bonus').innerHTML     = fmt(topBonus,      maxBonus,    'picks');
 }
 
 function toggleNominations(id) {
