@@ -146,7 +146,7 @@
                     <div><div class="font-bold" style="color:#800020">📺 Top Streamer</div><div class="text-xs text-gray-500 mb-1">Most streaming films</div><div class="font-semibold text-gray-800" id="lead-streamer">—</div></div>
                     <div><div class="font-bold" style="color:#800020">🎬 Cinephile</div><div class="text-xs text-gray-500 mb-1">Most movies watched</div><div class="font-semibold text-gray-800" id="lead-cinephile">—</div></div>
                     <div><div class="font-bold" style="color:#800020">🎟️ Theater Buff</div><div class="text-xs text-gray-500 mb-1">Most theater movies</div><div class="font-semibold text-gray-800" id="lead-theater">—</div></div>
-                    <div><div class="font-bold" style="color:#800020">⭐ Bonus Champion</div><div class="text-xs text-gray-500 mb-1">Most bonus picks</div><div class="font-semibold text-gray-800" id="lead-bonus">—</div></div>
+                    <div><div class="font-bold" style="color:#800020">⭐ Bonus Champion</div><div class="text-xs text-gray-500 mb-1">Most accurate bonus picks</div><div class="font-semibold text-gray-800" id="lead-bonus">—</div></div>
                 </div>
             </div>
 
@@ -442,7 +442,7 @@ function renderAccuracyLeaderboard() {
     }).filter(g => g.total > 0).sort((a, b) => b.accuracy !== a.accuracy ? b.accuracy - a.accuracy : b.correct - a.correct);
 
     if (!guests.length) {
-        el.innerHTML = '<p class="text-center text-gray-600 py-8">No predictions to score yet.</p>';
+        el.innerHTML = '<p class="text-center text-gray-600 py-8">Counting ballots...</p>';
         return;
     }
 
