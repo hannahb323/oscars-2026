@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>and the oscar goes to…. balcony bites</title>
+    <meta property="og:title" content="and the oscar goes to…. balcony bites">
+    <meta property="og:description" content="Track what you've watched, make your predictions, and see who called it!">
+    <meta property="og:image" content="https://hannahb323.github.io/oscars-2026/og-image.jpg">
+    <meta property="og:url" content="https://hannahb323.github.io/oscars-2026/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +25,7 @@
         @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-10px) rotate(5deg)} }
         @keyframes shimmer { 0%{background-position:-1000px 0} 100%{background-position:1000px 0} }
         @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
         .float { animation: float 4s ease-in-out infinite; }
         .shimmer { background: linear-gradient(90deg,#d4af37 0%,#f4d58d 50%,#d4af37 100%); background-size:200% auto; animation:shimmer 3s linear infinite; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
         .fade-in { animation: fadeIn 0.6s ease-out; }
@@ -40,12 +48,8 @@
         .toast-ok  { background:#f0fdf4; color:#166534; border-color:#16a34a; }
         .toast-err { background:#fef2f2; color:#991b1b; border-color:#dc2626; }
         .poster-placeholder { background: linear-gradient(90deg, #e8e0cc 25%, #f5f0e8 50%, #e8e0cc 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; min-height: 200px; }
-        /* prediction category answered state */
         .prediction-category.answered { border-color: #d4af37; background: linear-gradient(135deg,#fffdf0 0%,#faf8f3 100%); }
         .prediction-category.answered h4::after { content: ' ✓'; color: #d4af37; }
-        @keyframes scrollPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-        /* ── Mobile ────────────────────────────────────────────────────────── */
         @media(max-width:768px){
             body { font-size:14px; }
             h1 { font-size:2.2rem!important; }
@@ -92,7 +96,6 @@
 <div class="toast toast-saving" id="toast"></div>
 
 <div id="app" class="container mx-auto px-4 py-12 max-w-7xl">
-    <!-- Header -->
     <div class="text-center mb-12">
         <div class="float mb-6"><span class="text-8xl" style="filter:drop-shadow(0 0 20px rgba(212,175,55,0.5))">🏆</span></div>
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight shimmer">and the oscar goes to….</h1>
@@ -105,7 +108,8 @@
         <p class="text-yellow-100 max-w-xl mx-auto text-lg mb-8">Track what you've watched with your fellow nominees</p>
         <div id="pageTabs" class="hidden justify-center gap-4 mt-8">
             <button onclick="switchPage('watchlist')" id="tab-watchlist" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all gold-gradient text-gray-900 shadow-md border-2 border-yellow-600">Watch List</button>
-            <button onclick="switchPage('predictions')" id="tab-predictions" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200">Make Your Predictions</button>
+            <button id="tab-predictions" disabled class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm bg-gray-100 text-gray-400 border-2 border-gray-200 cursor-not-allowed opacity-60">Predictions Closed</button>
+            <button onclick="switchPage('admin')" id="tab-admin" class="page-tab px-8 py-3 font-bold uppercase tracking-wide text-sm transition-all bg-gray-100 text-gray-800 border-2 border-gray-300 hover:bg-gray-200">🏆 Winners</button>
         </div>
     </div>
 
@@ -167,7 +171,8 @@
                     </button>
                 </div>
                 <div class="text-center text-xs text-gray-400 mb-3" id="lastUpdated"></div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-sm" id="inTheLead">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center text-sm" id="inTheLead">
+                    <div><div class="font-bold" style="color:#800020">🏆 Most Accurate</div><div class="text-xs text-gray-500 mb-1">Best predictions</div><div class="font-semibold text-gray-800" id="lead-accurate">—</div></div>
                     <div><div class="font-bold" style="color:#800020">📺 Top Streamer</div><div class="text-xs text-gray-500 mb-1">Most streaming films</div><div class="font-semibold text-gray-800" id="lead-streamer">—</div></div>
                     <div><div class="font-bold" style="color:#800020">🎬 Cinephile</div><div class="text-xs text-gray-500 mb-1">Most movies watched</div><div class="font-semibold text-gray-800" id="lead-cinephile">—</div></div>
                     <div><div class="font-bold" style="color:#800020">🎟️ Theater Buff</div><div class="text-xs text-gray-500 mb-1">Most theater movies</div><div class="font-semibold text-gray-800" id="lead-theater">—</div></div>
@@ -213,19 +218,29 @@
                 </div>
                 <div id="saveStatus" class="hidden mt-4 p-4 rounded-sm text-center font-semibold"></div>
             </div>
-
             <div class="oscar-card p-8 art-deco-border max-w-4xl mx-auto mt-10">
                 <h3 class="text-3xl font-bold mb-2 text-center" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prediction Leaderboard</h3>
                 <p class="text-sm text-gray-600 mb-6 uppercase tracking-wide text-center font-semibold">Who's got the best predictions?</p>
                 <div id="leaderboard" class="space-y-3"></div>
             </div>
         </div>
+
+        <!-- Winners Page -->
+        <div id="page-admin" class="page-content hidden">
+            <div class="oscar-card p-8 art-deco-border max-w-4xl mx-auto">
+                <h3 class="text-3xl font-bold mb-2 text-center" style="background:linear-gradient(135deg,#800020 0%,#a0143e 50%,#800020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">🏆 Accuracy Leaderboard</h3>
+                <p class="text-sm text-gray-600 mb-6 uppercase tracking-wide text-center font-semibold">Based on the final Oscar results</p>
+                <div id="accuracyLeaderboard" class="space-y-3"></div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3F5SeJ1U-3hRDLn5HwQvbKPdQHfbzjr5sugv2J4TRPoVB6wSVwrZjfcTWRNemCFyz/exec';
 
+// ── API ───────────────────────────────────────────────────────────────────────
 function api(params) {
     return new Promise((resolve, reject) => {
         const cbName = '_cb' + Date.now() + Math.floor(Math.random() * 1000);
@@ -245,6 +260,7 @@ function api(params) {
     });
 }
 
+// ── TOAST ─────────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg, type='saving') {
     const el = document.getElementById('toast');
@@ -255,6 +271,7 @@ function showToast(msg, type='saving') {
 }
 function hideToast() { document.getElementById('toast').classList.remove('show'); }
 
+// ── DATA ──────────────────────────────────────────────────────────────────────
 const movies = [
     {id:1,title:"Marty Supreme",poster:"https://m.media-amazon.com/images/M/MV5BZTRhYjI1MTItMWYwMi00MjY5LWI1OTktMzQwNzA3MWJlN2QyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Josh Safdie"},{category:"Best Actor",nominee:"Timothée Chalamet"},{category:"Best Original Screenplay",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Cinematography",nominee:"Darius Khondji"},{category:"Best Film Editing",nominee:"Ronald Bronstein & Josh Safdie"},{category:"Best Production Design",nominee:"Jack Fisk"},{category:"Best Casting",nominee:"Jennifer Venditti"}],streaming:["Theaters"],nominationCount:8,info:"Josh Safdie's ping pong drama with Timothée Chalamet"},
     {id:2,title:"Hamnet",poster:"https://upload.wikimedia.org/wikipedia/en/1/1f/Hamnet_film_poster.jpeg",nominations:[{category:"Best Picture",nominee:""},{category:"Best Director",nominee:"Chloé Zhao"},{category:"Best Actress",nominee:"Jessie Buckley"},{category:"Best Adapted Screenplay",nominee:"Chloé Zhao & Maggie O'Farrell"},{category:"Best Original Score",nominee:"Max Richter"},{category:"Best Costume Design",nominee:"Malgosia Turzanska"},{category:"Best Production Design",nominee:"Fiona Crombie"},{category:"Best Casting",nominee:"Nina Gold"}],streaming:["Theaters"],nominationCount:8,info:"Chloé Zhao's Shakespearean drama"},
@@ -312,15 +329,17 @@ const bonusCategories = [
     {id:'best-international-feature',name:'Best International Feature',nominees:['The Secret Agent (Brazil)','It Was Just an Accident (France)','Sentimental Value (Norway)','Sirāt (Spain)','The Voice of Hind Rajab (Tunisia)']}
 ];
 
+const allCategoryIds = [...oscarCategories, ...bonusCategories].map(c => c.id);
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
 let currentUser = '', currentUserEmoji = '';
 let currentFilter = 'all', currentSubFilter = '', currentPage = 'watchlist';
 let userPredictions = {};
 let allUsersData = [], allPredsData = [];
+let oscarWinners = {};
 window.userWatched = new Set();
 
-// Build a flat ordered list of all category IDs for auto-advance
-const allCategoryIds = [...oscarCategories, ...bonusCategories].map(c => c.id);
-
+// ── LAZY POSTERS ──────────────────────────────────────────────────────────────
 let posterObserver;
 function initLazyPosters() {
     if (posterObserver) posterObserver.disconnect();
@@ -337,13 +356,16 @@ function initLazyPosters() {
     document.querySelectorAll('img.lazy-poster[data-src]').forEach(img => posterObserver.observe(img));
 }
 
+// ── EMOJI ─────────────────────────────────────────────────────────────────────
 function selectEmoji(emoji, btn) {
     currentUserEmoji = emoji;
     document.querySelectorAll('.emoji-option').forEach(b => b.style.borderBottom = 'none');
     btn.style.borderBottom = '3px solid #d4af37';
 }
 
+// ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
+    await loadWinners();
     const n = localStorage.getItem('oscarsUserName');
     const e = localStorage.getItem('oscarsUserEmoji');
     if (n && e) { currentUser = n; currentUserEmoji = e; showMainContent(); }
@@ -356,7 +378,7 @@ function showMainContent() {
     document.getElementById('pageTabs').style.display = 'flex';
     renderMovies();
     updateStats();
-    loadAll();
+    loadWinners().then(() => loadAll());
 }
 
 async function setUserName() {
@@ -369,6 +391,180 @@ async function setUserName() {
     showMainContent();
 }
 
+// ── WINNERS ───────────────────────────────────────────────────────────────────
+async function loadWinners() {
+    try {
+        const data = await api({ action: 'getWinners' });
+        if (data.winners && Object.keys(data.winners).length > 0) {
+            oscarWinners = data.winners;
+        }
+    } catch(e) {}
+}
+
+async function saveWinners() {
+    try {
+        showToast('Saving winners…', 'saving');
+        await api({ action: 'saveWinners', winners: JSON.stringify(oscarWinners) });
+        hideToast();
+        showAdminStatus('✅ Winners saved!', 'success');
+        renderAccuracyLeaderboard();
+        updateInTheLeadWithAccuracy();
+    } catch(e) {
+        hideToast();
+        showAdminStatus('❌ Save failed: ' + e.message, 'error');
+    }
+}
+
+async function clearWinners() {
+    if (!confirm('Clear all winner selections? This cannot be undone.')) return;
+    oscarWinners = {};
+    try { await api({ action: 'saveWinners', winners: JSON.stringify({}) }); } catch(e) {}
+    renderAdminPage();
+    renderAccuracyLeaderboard();
+    showAdminStatus('✅ All winners cleared.', 'success');
+}
+
+function updateWinner(catId, winner) {
+    oscarWinners[catId] = winner;
+}
+
+function renderAdminPage() {
+    const container = document.getElementById('adminContainer');
+    if (!container) return;
+    const allCats = [...oscarCategories, ...bonusCategories];
+    container.innerHTML = allCats.map(cat => {
+        return `
+        <div class="border-2 border-gray-200 rounded-sm p-6 bg-white">
+            <h4 class="text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide">🏆 ${cat.name}</h4>
+            <div class="space-y-2">
+                ${cat.nominees.map(nom => {
+                    const safe = nom.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+                    const isWinner = oscarWinners[cat.id] === nom;
+                    return `<label class="flex items-center gap-3 p-3 border-2 ${isWinner ? 'border-yellow-600 bg-yellow-50' : 'border-gray-200'} rounded-sm hover:bg-gray-50 cursor-pointer transition-all">
+                        <input type="radio" name="admin-${cat.id}" value="${nom.replace(/"/g,'&quot;')}"
+                            ${isWinner ? 'checked' : ''}
+                            onchange="updateWinner('${cat.id}','${safe}')"
+                            class="w-5 h-5 text-yellow-600">
+                        <span class="flex-1 font-medium text-gray-800">${nom}</span>
+                        ${isWinner ? '<span class="text-yellow-600 font-bold text-xs uppercase tracking-wide ml-auto">✓ Winner</span>' : ''}
+                    </label>`;
+                }).join('')}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function renderAccuracyLeaderboard() {
+    const el = document.getElementById('accuracyLeaderboard');
+    if (!el) return;
+    const announcedCount = Object.keys(oscarWinners).length;
+    if (announcedCount === 0) {
+        el.innerHTML = '<p class="text-center text-gray-600 py-8">No winners loaded yet.</p>';
+        return;
+    }
+    const guests = allUsersData.map(u => {
+        const preds = allPredsData.filter(r => r.name === u.name);
+        let correct = 0, total = 0;
+        preds.forEach(p => {
+            if (oscarWinners[p.category] !== undefined) {
+                total++;
+                if (oscarWinners[p.category] === p.nominee) correct++;
+            }
+        });
+        return { name: u.name, emoji: u.emoji || '🎬', correct, total, accuracy: total > 0 ? Math.round((correct / total) * 100) : 0, preds };
+    }).filter(g => g.total > 0).sort((a, b) => b.accuracy !== a.accuracy ? b.accuracy - a.accuracy : b.correct - a.correct);
+
+    if (!guests.length) {
+        el.innerHTML = '<p class="text-center text-gray-600 py-8">No predictions to score yet.</p>';
+        return;
+    }
+
+    const allCats = [...oscarCategories, ...bonusCategories];
+
+    el.innerHTML = guests.map((g, i) => {
+        const uid = g.name.replace(/\s+/g,'_');
+        const rows = allCats.map(cat => {
+            const pred = g.preds.find(p => p.category === cat.id);
+            const winner = oscarWinners[cat.id];
+            if (!pred && !winner) return '';
+            const isCorrect = pred && winner && pred.nominee === winner;
+            const isWrong = pred && winner && pred.nominee !== winner;
+            return `
+            <div class="flex items-start gap-3 py-2 border-b border-gray-100 last:border-0 text-sm">
+                <span class="text-lg flex-shrink-0">${isCorrect ? '✅' : isWrong ? '❌' : '—'}</span>
+                <div class="flex-1 min-w-0">
+                    <div class="font-semibold text-gray-500 text-xs uppercase tracking-wide">${cat.name}</div>
+                    <div class="font-bold ${isCorrect?'text-green-700':isWrong?'text-red-700':'text-gray-400'}">${pred ? pred.nominee : '<span class="italic font-normal text-gray-400">No pick</span>'}</div>
+                    ${isWrong ? `<div class="text-xs text-gray-500 mt-0.5">Winner: ${winner}</div>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+
+        return `
+        <div class="border-2 ${g.name===currentUser?'border-yellow-600':'border-gray-200'} rounded-sm overflow-hidden">
+            <button onclick="togglePicks('${uid}')" class="w-full flex items-center justify-between p-4 ${g.name===currentUser?'bg-gradient-to-r from-yellow-50 to-yellow-100':'bg-gray-50'} hover:opacity-90 transition-all text-left">
+                <div class="flex items-center gap-4">
+                    <span class="text-2xl font-bold text-gray-400 w-8">#${i+1}</span>
+                    <span class="text-2xl">${g.emoji}</span>
+                    <div>
+                        <div class="font-bold text-gray-900 uppercase tracking-wide">${g.name}${g.name===currentUser?' <span class="text-yellow-700 text-xs ml-2">(YOU)</span>':''}</div>
+                        <div class="text-sm text-gray-600">${g.correct}/${g.total} correct</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <div class="text-3xl font-bold ${g.accuracy>=75?'text-green-600':g.accuracy>=50?'text-yellow-600':'text-gray-600'}">${g.accuracy}%</div>
+                        <div class="text-xs text-gray-600 uppercase">Accuracy</div>
+                    </div>
+                    <span class="picks-arrow-${uid} text-gray-400 text-lg transition-transform inline-block">▼</span>
+                </div>
+            </button>
+            <div id="picks-${uid}" class="hidden px-6 py-4 bg-white">
+                ${rows}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function togglePicks(uid) {
+    const div = document.getElementById(`picks-${uid}`);
+    const arrow = document.querySelector(`.picks-arrow-${uid}`);
+    const open = div.classList.contains('hidden');
+    div.classList.toggle('hidden', !open);
+    if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function updateInTheLeadWithAccuracy() {
+    if (Object.keys(oscarWinners).length === 0) return;
+    const guests = allUsersData.map(u => {
+        const preds = allPredsData.filter(r => r.name === u.name);
+        let correct = 0, total = 0;
+        preds.forEach(p => {
+            if (oscarWinners[p.category] !== undefined) {
+                total++;
+                if (oscarWinners[p.category] === p.nominee) correct++;
+            }
+        });
+        return { name: u.name, emoji: u.emoji || '🎬', correct, total, accuracy: total > 0 ? Math.round((correct / total) * 100) : 0 };
+    }).filter(g => g.total > 0).sort((a, b) => b.accuracy !== a.accuracy ? b.accuracy - a.accuracy : b.correct - a.correct);
+
+    const el = document.getElementById('lead-accurate');
+    if (el && guests.length > 0) {
+        const w = guests[0];
+        el.innerHTML = `${w.emoji} ${w.name} <span class="text-xs text-gray-500">(${w.accuracy}% — ${w.correct}/${w.total})</span>`;
+    }
+}
+
+function showAdminStatus(msg, type) {
+    const el = document.getElementById('adminStatus');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = `mt-4 p-4 rounded-sm text-center font-semibold ${type==='success'?'bg-green-100 text-green-800 border-2 border-green-600':'bg-red-100 text-red-800 border-2 border-red-600'}`;
+    el.classList.remove('hidden');
+    setTimeout(() => el.classList.add('hidden'), 5000);
+}
+
+// ── LOAD SHEET DATA ───────────────────────────────────────────────────────────
 async function loadAll() {
     try {
         showToast('Syncing with sheet…', 'saving');
@@ -391,6 +587,7 @@ async function loadAll() {
         renderMovies();
         updateStats();
         updateLeaders();
+        updateInTheLeadWithAccuracy();
         setRefreshing(false);
     }
 }
@@ -398,30 +595,25 @@ async function loadAll() {
 function setLastUpdated(failed = false) {
     const el = document.getElementById('lastUpdated');
     if (!el) return;
-    if (failed) {
-        el.textContent = 'Sync failed — data may be outdated';
-        el.style.color = '#dc2626';
-    } else {
-        const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        el.textContent = `Last updated ${t}`;
-        el.style.color = '';
-    }
+    if (failed) { el.textContent = 'Sync failed — data may be outdated'; el.style.color = '#dc2626'; }
+    else { el.textContent = `Last updated ${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`; el.style.color = ''; }
 }
 
 function setRefreshing(on) {
     const icon = document.getElementById('refreshIcon');
     const btn = document.getElementById('refreshBtn');
     if (!icon) return;
-    icon.style.transition = 'transform 0.3s';
     icon.style.animation = on ? 'spin 0.8s linear infinite' : '';
     if (btn) btn.disabled = on;
 }
 
 async function refreshData() {
     setRefreshing(true);
+    await loadWinners();
     await loadAll();
 }
 
+// ── TOGGLE WATCHED ────────────────────────────────────────────────────────────
 async function toggleMovie(movieId) {
     const id = Number(movieId);
     if (window.userWatched.has(id)) window.userWatched.delete(id);
@@ -441,6 +633,7 @@ async function toggleMovie(movieId) {
     }
 }
 
+// ── FILTERS ───────────────────────────────────────────────────────────────────
 function setFilter(type, btn) {
     currentFilter = type; currentSubFilter = '';
     document.querySelectorAll('.filter-btn').forEach(b => {
@@ -478,6 +671,7 @@ function setSubFilter(btn) {
     renderMovies();
 }
 
+// ── RENDER MOVIES ─────────────────────────────────────────────────────────────
 function renderMovies() { filterMovies(); }
 
 function filterMovies() {
@@ -548,15 +742,15 @@ function filterMovies() {
                 <div class="relative group flex items-center gap-2 text-sm ${w?'text-yellow-100':'text-gray-600'} font-semibold cursor-pointer" onclick="this.querySelector('.viewer-tooltip').classList.toggle('hidden')">
                     <span class="text-lg">👥</span><span>${watchedBy}</span>
                     <span class="uppercase tracking-wide">${watchedBy===1?'Member':'Members'} Viewed</span>
-                    ${watchedBy > 0 ? `<span class="text-xs opacity-60">(tap to see)</span>` : ''}
-                    ${watchedBy > 0 ? `
+                    ${watchedBy>0?'<span class="text-xs opacity-60">(tap to see)</span>':''}
+                    ${watchedBy>0?`
                     <div class="viewer-tooltip hidden group-hover:block absolute bottom-full left-0 mb-2 z-50 min-w-max">
                         <div class="rounded-sm border border-yellow-600 shadow-lg px-3 py-2" style="background:linear-gradient(135deg,#1a1a1a,#2d2d2d)">
                             <div class="text-xs font-bold text-yellow-500 uppercase tracking-wide mb-1">Watched by</div>
-                            ${viewers.map(u => `<div class="text-sm text-yellow-100 py-0.5">${u.emoji || '🎬'} ${u.name}</div>`).join('')}
+                            ${viewers.map(u=>`<div class="text-sm text-yellow-100 py-0.5">${u.emoji||'🎬'} ${u.name}</div>`).join('')}
                         </div>
                         <div class="w-2 h-2 rotate-45 border-r border-b border-yellow-600 mx-3 -mt-1" style="background:#2d2d2d"></div>
-                    </div>` : ''}
+                    </div>`:''}
                 </div>
             </div>
         </div>`;
@@ -572,29 +766,27 @@ function updateStats() {
 function updateLeaders() {
     const theaterIds = new Set(movies.filter(m => m.streaming.includes('Theaters')).map(m => m.id));
     const streamingIds = new Set(movies.filter(m => m.streaming.some(p => p !== 'Theaters')).map(m => m.id));
-
-    let topStreamer = null, topCinephile = null, topTheater = null, topBonus = null;
-    let maxStream = 0, maxAll = 0, maxTheater = 0, maxBonus = 0;
-
+    let topStreamer=null, topCinephile=null, topTheater=null, topBonus=null;
+    let maxStream=0, maxAll=0, maxTheater=0, maxBonus=0;
     allUsersData.forEach(u => {
         const watched = u.watched ? u.watched.toString().split(',').map(Number).filter(Boolean) : [];
-        const streamCount = watched.filter(id => streamingIds.has(id)).length;
-        const theaterCount = watched.filter(id => theaterIds.has(id)).length;
-        const totalCount = watched.length;
-        const bonusCount = allPredsData.filter(r => r.name === u.name && bonusCategories.some(c => c.id === r.category)).length;
-
-        if (streamCount > maxStream)  { maxStream = streamCount;   topStreamer   = u; }
-        if (totalCount > maxAll)      { maxAll = totalCount;        topCinephile = u; }
-        if (theaterCount > maxTheater){ maxTheater = theaterCount;  topTheater   = u; }
-        if (bonusCount > maxBonus)    { maxBonus = bonusCount;      topBonus     = u; }
+        const sc = watched.filter(id=>streamingIds.has(id)).length;
+        const tc = watched.filter(id=>theaterIds.has(id)).length;
+        const ac = watched.length;
+        const bonusPreds = allPredsData.filter(r=>r.name===u.name&&bonusCategories.some(c=>c.id===r.category));
+        const bonusCorrect = bonusPreds.filter(p=>oscarWinners[p.category]&&oscarWinners[p.category]===p.nominee).length;
+        const bonusTotal = bonusPreds.filter(p=>oscarWinners[p.category]!==undefined).length;
+        const bc = bonusTotal > 0 ? Math.round((bonusCorrect / bonusTotal) * 100) : 0;
+        if (sc>maxStream){maxStream=sc;topStreamer=u;}
+        if (ac>maxAll){maxAll=ac;topCinephile=u;}
+        if (tc>maxTheater){maxTheater=tc;topTheater=u;}
+        if (bc>maxBonus||(bc===maxBonus&&bonusCorrect>(topBonus?allPredsData.filter(r=>r.name===topBonus.name&&bonusCategories.some(c=>c.id===r.category)&&oscarWinners[r.category]===r.nominee).length:0))){maxBonus=bc;topBonus=u;}
     });
-
-    const fmt = (u, count, label) => u ? `${u.emoji || '🎬'} ${u.name} <span class="text-xs text-gray-500">(${count} ${label})</span>` : '<span class="text-gray-400 text-xs">No data yet</span>';
-
-    document.getElementById('lead-streamer').innerHTML  = fmt(topStreamer,   maxStream,   'films');
-    document.getElementById('lead-cinephile').innerHTML = fmt(topCinephile,  maxAll,      'films');
-    document.getElementById('lead-theater').innerHTML   = fmt(topTheater,    maxTheater,  'films');
-    document.getElementById('lead-bonus').innerHTML     = fmt(topBonus,      maxBonus,    'picks');
+    const fmt = (u,cnt,lbl) => u?`${u.emoji||'🎬'} ${u.name} <span class="text-xs text-gray-500">(${cnt}${lbl})</span>`:'<span class="text-gray-400 text-xs">No data yet</span>';
+    document.getElementById('lead-streamer').innerHTML  = fmt(topStreamer,  maxStream,  ' films');
+    document.getElementById('lead-cinephile').innerHTML = fmt(topCinephile, maxAll,     ' films');
+    document.getElementById('lead-theater').innerHTML   = fmt(topTheater,   maxTheater, ' films');
+    document.getElementById('lead-bonus').innerHTML     = fmt(topBonus,     maxBonus,   '% bonus');
 }
 
 function toggleNominations(id) {
@@ -606,6 +798,7 @@ function toggleNominations(id) {
     if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
 }
 
+// ── PAGE SWITCHING ────────────────────────────────────────────────────────────
 function switchPage(page) {
     currentPage = page;
     document.querySelectorAll('.page-tab').forEach(t => {
@@ -617,6 +810,7 @@ function switchPage(page) {
     document.querySelectorAll('.page-content').forEach(c => c.classList.add('hidden'));
     document.getElementById(`page-${page}`).classList.remove('hidden');
     if (page === 'predictions') { renderPredictions(); renderLeaderboard(); }
+    if (page === 'admin') { renderAdminPage(); renderAccuracyLeaderboard(); }
 }
 
 // ── PREDICTIONS ───────────────────────────────────────────────────────────────
@@ -624,7 +818,7 @@ function renderPredictions() {
     const container = document.getElementById('predictionsContainer');
     function catHTML(cat, bonus) {
         return `
-        <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white${userPredictions[cat.id] ? ' answered' : ''}" id="pred-cat-${cat.id}">
+        <div class="prediction-category border-2 border-gray-200 rounded-sm p-6 bg-white${userPredictions[cat.id]?' answered':''}" id="pred-cat-${cat.id}">
             <h4 class="text-${bonus?'lg':'xl'} font-bold text-gray-900 mb-4 uppercase tracking-wide">${bonus?'⭐':'🏆'} ${cat.name}</h4>
             <div class="space-y-2">
                 ${cat.nominees.map(nom => {
@@ -655,44 +849,27 @@ function renderPredictions() {
 
 function updatePrediction(catId, nominee, radioEl) {
     userPredictions[catId] = nominee;
-
-    // Mark the category card as answered
     const card = document.getElementById(`pred-cat-${catId}`);
     if (card) card.classList.add('answered');
-
-    // Auto-advance: find the next unanswered category and scroll to it
     const currentIdx = allCategoryIds.indexOf(catId);
     if (currentIdx === -1) return;
-
-    // Look for the next category that hasn't been answered yet
     let nextId = null;
     for (let i = currentIdx + 1; i < allCategoryIds.length; i++) {
-        if (!userPredictions[allCategoryIds[i]]) {
-            nextId = allCategoryIds[i];
-            break;
-        }
+        if (!userPredictions[allCategoryIds[i]]) { nextId = allCategoryIds[i]; break; }
     }
-    // If all remaining are answered, just go to the one immediately after
-    if (!nextId && currentIdx + 1 < allCategoryIds.length) {
-        nextId = allCategoryIds[currentIdx + 1];
-    }
-
+    if (!nextId && currentIdx + 1 < allCategoryIds.length) nextId = allCategoryIds[currentIdx + 1];
     if (nextId) {
         setTimeout(() => {
             const nextCard = document.getElementById(`pred-cat-${nextId}`);
             if (nextCard) {
                 nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Brief highlight flash on the next card
                 nextCard.style.transition = 'box-shadow 0.3s';
                 nextCard.style.boxShadow = '0 0 0 3px #d4af37';
                 setTimeout(() => { nextCard.style.boxShadow = ''; }, 800);
             }
         }, 300);
     } else {
-        // All done — scroll to submit
-        setTimeout(() => {
-            document.getElementById('submitSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
+        setTimeout(() => { document.getElementById('submitSection').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
     }
 }
 
@@ -731,10 +908,7 @@ async function clearMyData() {
         if (myRow) myRow.watched = '';
         allPredsData = allPredsData.filter(r=>r.name!==currentUser);
         hideToast();
-        renderMovies();
-        updateStats();
-        renderPredictions();
-        renderLeaderboard();
+        renderMovies(); updateStats(); renderPredictions(); renderLeaderboard();
         showSaveStatus('✓ All your data has been cleared.','success');
     } catch(err) {
         hideToast();
@@ -750,20 +924,14 @@ function renderLeaderboard() {
         const bonusCount = preds.filter(r=>bonusCategories.some(c=>c.id===r.category)).length;
         return { name:u.name, emoji:u.emoji||'🎬', mainCount, bonusCount, total:preds.length };
     }).filter(g=>g.total>0).sort((a,b)=>b.total-a.total);
-
-    if (!guests.length) {
-        el.innerHTML='<p class="text-center text-gray-600 py-8">No predictions yet. Be the first to make your picks!</p>';
-        return;
-    }
+    if (!guests.length) { el.innerHTML='<p class="text-center text-gray-600 py-8">No predictions yet. Be the first to make your picks!</p>'; return; }
     el.innerHTML = guests.map((g,i)=>`
         <div class="flex items-center justify-between p-4 ${g.name===currentUser?'bg-gradient-to-r from-yellow-50 to-yellow-100 border-2 border-yellow-600':'bg-gray-50 border-2 border-gray-200'} rounded-sm">
             <div class="flex items-center gap-4">
                 <span class="text-2xl font-bold text-gray-400 w-8">#${i+1}</span>
                 <span class="text-2xl">${g.emoji}</span>
                 <div>
-                    <div class="font-bold text-gray-900 uppercase tracking-wide">
-                        ${g.name}${g.name===currentUser?' <span class="text-yellow-700 text-xs ml-2">(YOU)</span>':''}
-                    </div>
+                    <div class="font-bold text-gray-900 uppercase tracking-wide">${g.name}${g.name===currentUser?' <span class="text-yellow-700 text-xs ml-2">(YOU)</span>':''}</div>
                     <div class="text-sm text-gray-600">${g.mainCount}/${oscarCategories.length} main • ${g.bonusCount}/${bonusCategories.length} bonus</div>
                 </div>
             </div>
